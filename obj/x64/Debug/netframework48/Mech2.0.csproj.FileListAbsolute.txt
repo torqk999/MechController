@@ -1,0 +1,7 @@
+C:\Repos\SpaceEngineers\Mech2.0\bin\x64\Debug\netframework48\Mech2.0.dll
+C:\Repos\SpaceEngineers\Mech2.0\bin\x64\Debug\netframework48\Mech2.0.pdb
+C:\Repos\SpaceEngineers\Mech2.0\obj\x64\Debug\netframework48\Mech2.0.csproj.AssemblyReference.cache
+C:\Repos\SpaceEngineers\Mech2.0\obj\x64\Debug\netframework48\Mech2.0.GeneratedMSBuildEditorConfig.editorconfig
+C:\Repos\SpaceEngineers\Mech2.0\obj\x64\Debug\netframework48\Mech2.0.csproj.CoreCompileInputs.cache
+C:\Repos\SpaceEngineers\Mech2.0\obj\x64\Debug\netframework48\Mech2.0.dll
+C:\Repos\SpaceEngineers\Mech2.0\obj\x64\Debug\netframework48\Mech2.0.pdb
