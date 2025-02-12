@@ -1,6 +1,7 @@
 ﻿//using Sandbox.ModAPI;
 using Sandbox.ModAPI.Ingame;
 using System.Collections.Generic;
+using VRage.GameServices;
 
 namespace IngameScript
 {
@@ -9,27 +10,34 @@ namespace IngameScript
         class Functional : Root
         {
             IMyFunctionalBlock FuncBlock;
-            public Functional(IMyFunctionalBlock funcBlock) : base() { FuncBlock = funcBlock; }
-            public Functional(IMyFunctionalBlock funcBlock, RootData data) : base(data) { FuncBlock = funcBlock; }
-
-            public virtual List<int> Indexes()
-            {
-                List<int> indexes = new List<int> {
-                    MyIndex,
-                    ParentIndex,
-                };
-                return indexes;
+            public int FootIndex;
+            public Functional(IMyFunctionalBlock funcBlock) : base(funcBlock.CustomData) {
+                FuncBlock = funcBlock;
+            }
+            public Functional(IMyFunctionalBlock funcBlock, int[] intData) : base(intData) {
+                TAG = ParseBlockTag(funcBlock, intData[(int)PARAM_int.fIX] > -1);
+                FuncBlock = funcBlock;
             }
 
-            public override string Name()
-            {
-                return FuncBlock?.CustomName;
+            public override string Name {
+                get { return FuncBlock?.CustomName;}
+                set { if (FuncBlock != null) FuncBlock.CustomName = value; }
             }
 
-            public override void SetName(string newName)
-            {
-                if (FuncBlock != null)
-                    FuncBlock.CustomName = newName;
+            public bool IsAlive() {
+                try { return FuncBlock.IsWorking; }
+                catch { return false; }
+            }
+
+            protected override bool Load(string[] data) {
+                if (!base.Load(data)) return false;
+
+                try {
+                    FootIndex = int.Parse(data[(int)PARAM_custom.fIX]);
+                    TAG = ParseBlockTag(FuncBlock, FootIndex > -1);
+                    return true;
+                }
+                catch { return false; }
             }
 
             public bool Save()

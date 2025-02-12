@@ -5,7 +5,7 @@ namespace IngameScript
     partial class Program
     {
 
-        struct RootData
+        /*struct RootData
         {
             public static RootData Default = new RootData("Un-named", -1, -1, true);
 
@@ -21,7 +21,7 @@ namespace IngameScript
                 ParentIndex = parentIndex;
                 Overwrite = overwrite;
             }
-        }
+        }*/
 
 
     }

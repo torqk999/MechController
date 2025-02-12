@@ -81,8 +81,8 @@ namespace IngameScript
 
             void JointPageBuilder()
             {
-                for (int i = (int)PARAM.TAG; i < JointParamCount; i++)
-                    DisplayManagerBuilder.Append($"[{(PARAM)i}]");
+                for (int i = (int)PARAM_custom.TAG; i < JointParamCount; i++)
+                    DisplayManagerBuilder.Append($"[{(PARAM_custom)i}]");
 
                 DisplayManagerBuilder.Append("[Name]");
                 RawBuffer.Add(DisplayManagerBuilder.ToString());
@@ -93,8 +93,8 @@ namespace IngameScript
 
             void MagnetPageBuilder()
             {
-                for (int i = (int)PARAM.TAG; i < MagnetParamCount; i++)
-                    DisplayManagerBuilder.Append($"[{(PARAM)i}]");
+                for (int i = (int)PARAM_custom.TAG; i < MagnetParamCount; i++)
+                    DisplayManagerBuilder.Append($"[{(PARAM_custom)i}]");
 
                 DisplayManagerBuilder.Append("[Name]");
                 RawBuffer.Add(DisplayManagerBuilder.ToString());
@@ -128,7 +128,7 @@ namespace IngameScript
 
                 DisplayManagerBuilder.Append(BuildCursor(selected));
                 DisplayManagerBuilder.Append($"{Pad(index)}");
-                List<int> indexes = joint.Indexes();
+                int[] intData = joint.IntParams();
                 int selectedParam = SelectedIndex(eRoot.PARAM);
                 int selectedElement = SelectedIndex(AlternateMode ? eRoot.MAGNET : eRoot.JOINT);
                 string leftSelect, rightSelect;
@@ -137,15 +137,15 @@ namespace IngameScript
                 rightSelect = selectedParam == 1 && selectedElement == index ? Cursor[3] : Cursor[0];
                 DisplayManagerBuilder.Append($"{leftSelect}[{joint.TAG}]{rightSelect}");
 
-                for (int i = 0; i < indexes.Count; i++)
+                for (int i = 0; i < intData.Length; i++)
                 {
-                    leftSelect = selectedParam == (int)PARAM.uIX + i && selectedElement == index ? Cursor[2] : Cursor[0];
-                    rightSelect = selectedParam == (int)PARAM.uIX + i && selectedElement == index ? Cursor[3] : Cursor[0];
-                    DisplayManagerBuilder.Append($"{leftSelect}[{Pad(indexes[i])}]{rightSelect}");
+                    leftSelect = selectedParam == (int)PARAM_int.uIX + i && selectedElement == index ? Cursor[2] : Cursor[0];
+                    rightSelect = selectedParam == (int)PARAM_int.uIX + i && selectedElement == index ? Cursor[3] : Cursor[0];
+                    DisplayManagerBuilder.Append($"{leftSelect}[{Pad(intData[i])}]{rightSelect}");
                 }
 
                 
-                DisplayManagerBuilder.Append($" == {joint.Name()}");
+                DisplayManagerBuilder.Append($" == {joint.Name}");
 
                 RawBuffer.Add(DisplayManagerBuilder.ToString());
 
@@ -158,8 +158,10 @@ namespace IngameScript
                 foreach (IMyMechanicalConnectionBlock joint in ReTagBuffer)
                 {
                     Joint freshJoint = LoadJoint(joint);
-                    if (!freshJoint.BUILT)
-                        freshJoint = NewJoint(JointData.Default, joint);
+                    if (!freshJoint.BUILT) {
+
+                        freshJoint = NewJoint(joint);
+                    }
 
                     int oldIndex = JointBin.FindIndex(x => ((Joint)x).Connection.EntityId == joint.EntityId);
 
@@ -174,8 +176,15 @@ namespace IngameScript
                 foreach (IMyLandingGear gear in ReTagBuffer)
                 {
                     Magnet freshMagnet = LoadMagnet(gear);
-                    if (!freshMagnet.BUILT)
-                        freshMagnet = NewMagnet(RootData.Default, gear, -1);
+
+                    if (!freshMagnet.BUILT) {
+                        int[] intData = new int[Enum.GetNames(typeof(PARAM_int)).Length];
+                        intData[(int)PARAM_int.pIX] = SelectedIndex(eRoot.JSET);
+                        intData[(int)PARAM_int.uIX] = -1; // ??????????????
+                        intData[(int)PARAM_int.fIX] = -1;
+
+                        freshMagnet = NewMagnet(gear, intData);
+                    }
 
                     int oldIndex = MagnetBin.FindIndex(x => ((Magnet)x).Gear.EntityId == gear.EntityId);
 
@@ -206,9 +215,9 @@ namespace IngameScript
             void TableValueAdjust(int deltaValue)
             {
                 if (AlternateMode)
-                    AdjustMagnetParam(MagnetBin[SelectedIndex(eRoot.MAGNET)] as Magnet, (PARAM)SelectedIndex(eRoot.PARAM), deltaValue);
+                    AdjustMagnetParam(MagnetBin[SelectedIndex(eRoot.MAGNET)] as Magnet, (PARAM_custom)SelectedIndex(eRoot.PARAM), deltaValue);
                 else
-                    AdjustJointParam(JointBin[SelectedIndex(eRoot.JOINT)] as Joint, (PARAM)SelectedIndex(eRoot.PARAM), deltaValue);
+                    AdjustJointParam(JointBin[SelectedIndex(eRoot.JOINT)] as Joint, (PARAM_custom)SelectedIndex(eRoot.PARAM), deltaValue);
             }
             public override void SetMode(GUIMode mode)
             {
@@ -231,32 +240,32 @@ namespace IngameScript
 
                 TableShift(0, 0);
             }
-            void AdjustJointParam(Joint joint, PARAM targetParam, int deltaValue)
+            void AdjustJointParam(Joint joint, PARAM_custom targetParam, int deltaValue)
             {
                 switch (targetParam)
                 {
-                    case PARAM.uIX:
+                    case PARAM_custom.uIX:
                         GetJointSet(SelectedIndex(eRoot.JSET))?.Swap(joint.MyIndex, joint.MyIndex += deltaValue, eRoot.JOINT);
                         break;
 
-                    case PARAM.pIX:
+                    case PARAM_custom.pIX:
                         joint.ParentIndex += deltaValue;
                         break;
 
-                    case PARAM.fIX:
+                    case PARAM_custom.fIX:
                         joint.FootIndex += deltaValue;
                         break;
 
-                    case PARAM.GripDirection:
+                    case PARAM_custom.GripDirection:
                         joint.GripDirection += deltaValue;
                         joint.GripDirection = joint.GripDirection < -1 ? -1 : joint.GripDirection > 1 ? 1 : joint.GripDirection;
                         break;
 
-                    case PARAM.sIX:
+                    case PARAM_custom.sIX:
                         joint.SyncIndex += deltaValue;
                         break;
 
-                    case PARAM.TAG:
+                    case PARAM_custom.TAG:
                         int tagIndex = JointTags.FindIndex(x => x == joint.TAG);
                         if (tagIndex < 0)
                         {
@@ -274,23 +283,23 @@ namespace IngameScript
                 }
             }
 
-            void AdjustMagnetParam(Magnet magnet, PARAM targetParam, int deltaValue)
+            void AdjustMagnetParam(Magnet magnet, PARAM_custom targetParam, int deltaValue)
             {
                 switch (targetParam)
                 {
-                    case PARAM.uIX:
+                    case PARAM_custom.uIX:
                         magnet.MyIndex += deltaValue;
                         break;
 
-                    case PARAM.pIX:
+                    case PARAM_custom.pIX:
                         magnet.ParentIndex += deltaValue;
                         break;
 
-                    case PARAM.fIX:
+                    case PARAM_custom.fIX:
                         magnet.FootIndex += deltaValue;
                         break;
 
-                    case PARAM.TAG:
+                    case PARAM_custom.TAG:
                         int tagIndex = MagnetTags.FindIndex(x => x == magnet.TAG);
                         if (tagIndex < 0)
                         {
@@ -308,15 +317,15 @@ namespace IngameScript
                 }
             }
 
-            void AdjustFunctionalParam(Functional functional, PARAM targetParam, int deltaValue)
+            void AdjustFunctionalParam(Functional functional, PARAM_custom targetParam, int deltaValue)
             {
                 switch(targetParam)
                 {
-                    case PARAM.uIX:
+                    case PARAM_custom.uIX:
                         functional.MyIndex += deltaValue;
                         break;
 
-                    case PARAM.pIX:
+                    case PARAM_custom.pIX:
                         functional.ParentIndex += deltaValue;
                         break;
 

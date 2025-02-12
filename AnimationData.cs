@@ -4,7 +4,7 @@ namespace IngameScript
 {
     partial class Program
     {
-        struct AnimationData
+        /*struct AnimationData
         {
             public RootData Root;
             public float InitValue;
@@ -16,7 +16,7 @@ namespace IngameScript
                 Root = root;
                 InitValue = init;
             }
-        }
+        }*/
 
     }
 }

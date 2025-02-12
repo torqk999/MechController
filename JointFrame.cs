@@ -11,24 +11,21 @@ namespace IngameScript
         {
             public Joint Joint;
 
-            public JointFrame(AnimationData data, Joint joint, bool snapping = true) : base(data) // Snapshot
+            public JointFrame(Joint joint, int[] intData, bool snapping = true) : base((float)joint?.CurrentPosition(), joint.Name, intData) // Snapshot
             {
-                TAG = JframeTag;
                 Joint = joint;
-                GenerateSetting((float)Joint.CurrentPosition());
 
                 if (snapping)
                     MySetting.Change((int)MySetting.MyValue());
-                
             }
             public JointFrame(string input, Joint joint) : base(input)
             {
                 Joint = joint;
-                BUILT = Load(input);
+                //BUILT = Load(input);
             }
             public override void GenerateSetting(float init)
             {
-                Static($"jFrame {Name()} GeneratingSetting...\n");
+                Static($"jFrame {Name} GeneratingSetting...\n");
                 MySetting = new Setting("Joint Position", "The animation value of the joint associated joint within a given keyFrame.",
                     init, Snapping ? 1 : 0.1f,
                     (Joint == null ? 0 : Joint.LimitMax()),

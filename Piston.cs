@@ -13,7 +13,7 @@ namespace IngameScript
             public IMyPistonBase PistonBase;
             public Joint Reference;
 
-            public Piston(IMyPistonBase pistonBase, JointData data) : base(pistonBase, data)
+            public Piston(IMyPistonBase pistonBase, int[] intData) : base(pistonBase, intData)
             {
                 PistonBase = pistonBase;
             }

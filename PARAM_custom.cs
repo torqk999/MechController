@@ -4,7 +4,7 @@ namespace IngameScript
 {
     partial class Program
     {
-        enum PARAM
+        enum PARAM_custom
         {
             Name = 1,
             TAG = 0,
@@ -18,6 +18,20 @@ namespace IngameScript
             SettingInit = 4,
             //GroupName = 4,
             GripDirection = 5,
+        }
+
+        enum PARAM_string {
+            Name = 1,
+            TAG = 0,
+        }
+
+        enum PARAM_int {
+            uIX = 0, // unique index (my)
+            pIX = 1, // parent
+            fIX = 2, // foot
+            lIX = 3, // lock
+            sIX = 3, // sync
+            GripDirection = 3
         }
 
     }

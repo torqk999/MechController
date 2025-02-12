@@ -1,4 +1,5 @@
 ﻿//using Sandbox.ModAPI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -110,7 +111,7 @@ namespace IngameScript
                             continue;
                         }
 
-                        AppendLibraryItem(eRoot.JSET, jSetIndex, JsetBin[jSetIndex].Name());
+                        AppendLibraryItem(eRoot.JSET, jSetIndex, JsetBin[jSetIndex].Name);
 
                         if ((int)CurrentDirectoryLayer < 1 || SelectedIndex(eRoot.JSET) != jSetIndex)
                             continue;
@@ -284,7 +285,7 @@ namespace IngameScript
                 if (root == null)
                     return;
 
-                root.SetName(name);
+                root.Name = name;
             }
             void InsertItem(bool add = true)
             {
@@ -308,9 +309,13 @@ namespace IngameScript
                         if (name == null)
                             name = $"New Sequence";
 
-                        RootData seqRoot = set.ParentData(name, index);
-                        AnimationData seqData = new AnimationData(seqRoot, ClockSpeedDef);
-                        set.Insert(new Sequence(seqData, set), index);
+                        int[] intData = new int[Enum.GetNames(typeof(PARAM_int)).Length];
+                        intData[(int)PARAM_int.uIX] = index;
+                        intData[(int)PARAM_int.pIX] = set.MyIndex;
+
+                        //RootData seqRoot = set.ParentData(name, index);
+                        //AnimationData seqData = new AnimationData(seqRoot, ClockSpeedDef);
+                        set.Insert(new Sequence(ClockSpeedDef, name, intData, set), index);
                         break;
 
                     case eRoot.K_FRAME:
@@ -464,7 +469,7 @@ namespace IngameScript
 
                 for (int seqIndex = 0; seqIndex < set.Sequences.Count; seqIndex++)
                 {
-                    AppendLibraryItem(eRoot.SEQUENCE, seqIndex, set.Sequences[seqIndex].Name());
+                    AppendLibraryItem(eRoot.SEQUENCE, seqIndex, set.Sequences[seqIndex].Name);
 
                     if ((int)CurrentDirectoryLayer < 2 || SelectedIndex(eRoot.SEQUENCE) != seqIndex)
                         continue;
@@ -481,7 +486,7 @@ namespace IngameScript
 
                 for (int kFrameIndex = 0; kFrameIndex < seq.Frames.Count; kFrameIndex++)
                 {
-                    AppendLibraryItem(eRoot.K_FRAME, kFrameIndex, seq.Frames[kFrameIndex].Name());
+                    AppendLibraryItem(eRoot.K_FRAME, kFrameIndex, seq.Frames[kFrameIndex].Name);
 
                     if ((int)CurrentDirectoryLayer < 3 || SelectedIndex(eRoot.K_FRAME) != kFrameIndex)
                         continue;

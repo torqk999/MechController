@@ -1,4 +1,5 @@
 ﻿//using Sandbox.ModAPI;
+using System;
 using System.Collections.Generic;
 
 namespace IngameScript
@@ -19,17 +20,17 @@ namespace IngameScript
             public float CurrentClockTime = 0;
             public bool StepDelay;
 
-            public Sequence(AnimationData data, JointSet set = null) : base(data)
+            public Sequence(float init, string name, int[] intData, JointSet set = null) : base(init, name, intData)
             {
                 TAG = SeqTag;
                 JointSet = set;
-                GenerateSetting(ClockSpeedDef);
+                //GenerateSetting(ClockSpeedDef);
             }
             public Sequence(string input, JointSet set, List<KeyFrame> buffer) : base(input)
             {
                 JointSet = set;
                 Frames.AddRange(buffer);
-                BUILT = Load(input);
+                //BUILT = Load(input);
             }
             public KeyFrame GetKeyFrame(int index)
             {
@@ -43,7 +44,7 @@ namespace IngameScript
                 if (!base.Load(data))
                     return false;
 
-                try { GenerateSetting(float.Parse(data[(int)PARAM.SettingInit])); }
+                try { GenerateSetting(float.Parse(data[(int)PARAM_custom.SettingInit])); }
                 catch { GenerateSetting(0); }
 
                 return true;
@@ -124,7 +125,11 @@ namespace IngameScript
                 if (name == null)
                     name = $"Frame_{index}";
 
-                KeyFrame newKFrame = NewKeyFrame(new AnimationData(ParentData(name, index), FrameLengthDef), JointSet);
+                int[] intData = new int[Enum.GetNames(typeof(PARAM_int)).Length];
+                intData[(int)PARAM_int.uIX] = index;
+                intData[(int)PARAM_int.pIX] = MyIndex;
+
+                KeyFrame newKFrame = NewKeyFrame(intData, JointSet);
 
                 Insert(newKFrame, index);
                 return true;
@@ -194,17 +199,17 @@ namespace IngameScript
                     return true;
                 return false;
             }
-            public bool LoadKeyFrames(bool footInterrupt, int index = -1)
+            public bool LoadKeyFrames(bool footInterrupt, int lockedFrameIndex = -1)
             {
                 bool forward = CurrentClockMode != ClockMode.REV;
                 CurrentClockTime = forward ? 0 : 1;
 
-                int indexZero = CurrentFrames[0] == null || index != -1 ?
-                    forward ? index : NextFrameIndex(index) :
+                int indexZero = CurrentFrames[0] == null || lockedFrameIndex != -1 ?
+                    forward ? lockedFrameIndex : NextFrameIndex(lockedFrameIndex) :
                     NextFrameIndex(CurrentFrames[0].MyIndex);
 
-                int indexOne = CurrentFrames[1] == null || index != -1 ?
-                    forward ? NextFrameIndex(index) : index :
+                int indexOne = CurrentFrames[1] == null || lockedFrameIndex != -1 ?
+                    forward ? NextFrameIndex(lockedFrameIndex) : lockedFrameIndex :
                     NextFrameIndex(CurrentFrames[1].MyIndex);
 
                 CurrentFrames[0] = GetKeyFrame(indexZero);

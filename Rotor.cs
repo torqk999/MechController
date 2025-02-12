@@ -6,53 +6,55 @@ using VRageMath;
 
 namespace IngameScript
 {
-    partial class Program
-    {
-
-        class Rotor : Joint
-        {
+    partial class Program {
+        class Rotor : Joint {
             public IMyMotorStator Stator;
 
-            public Rotor(IMyMotorStator stator, JointData data) : base(stator, data)
-            {
+            /// <summary>
+            /// tag unspecified
+            /// </summary>
+            /// <param name="stator"></param>
+            /// <param name="intData"></param>
+            public Rotor(IMyMotorStator stator, int[] intData) : this(stator, null, intData) { }
+
+            /// <summary>
+            /// tag specified
+            /// </summary>
+            /// <param name="stator"></param>
+            /// <param name="tag"></param>
+            /// <param name="intData"></param>
+            public Rotor(IMyMotorStator stator, string tag, int[] intData) : base(stator, tag, intData) {
                 Stator = stator;
             }
 
-            public Rotor(IMyMotorStator stator) : base(stator)
-            {
+            public Rotor(IMyMotorStator stator) : base(stator) {
                 Stator = stator;
             }
-            public override void SetForce(bool max)
-            {
+            public override void SetForce(bool max) {
                 base.SetForce(max);
                 Connection.SetValue("Torque", CurrentForce);
             }
-            public override float TorqueMax()
-            {
+            public override float TorqueMax() {
                 return Connection.GetMaximum<float>("Torque");
             }
-            public override Vector3 ReturnRotationAxis()
-            {
+            public override Vector3 ReturnRotationAxis() {
                 return LargeGrid ? Stator.WorldMatrix.Up : Stator.WorldMatrix.Down;
             }
-            public override double CurrentPosition()
-            {
+            public override double CurrentPosition() {
                 return Stator.Angle * RAD2DEG;
             }
-            public override float ClampTargetValue(float target)
-            {
+            public override float ClampTargetValue(float target) {
                 target %= 360;
                 target = target < 0 ? target + 360 : target;
                 return target;
             }
-            public override void LerpAnimationFrame(float lerpTime)
-            {
+            public override void LerpAnimationFrame(float lerpTime) {
+
                 double mag = Math.Abs(LerpPoints[0] - LerpPoints[1]);
                 int dir = (mag > 180) ? Math.Sign(LerpPoints[0] - LerpPoints[1]) : Math.Sign(LerpPoints[1] - LerpPoints[0]);
 
                 mag = mag > 180 ? 360 - mag : mag;
                 mag *= (lerpTime * dir);
-
 
                 AnimTarget = LerpPoints[0] + mag;
                 AnimTarget = (AnimTarget > 360) ? AnimTarget - 360 : AnimTarget;

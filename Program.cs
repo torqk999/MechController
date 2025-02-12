@@ -686,7 +686,7 @@ ALL_JOINTS:S:LOAD FINISHED
                     for (int j = 0; j < foot.Planars.Count; j++)
                     {
                         Joint joint = foot.GetPlanar(j);
-                        DisplayManagerBuilder.Append($"Planar {joint.Name()} rotation axis: {joint.ReturnRotationAxis()}\n");
+                        DisplayManagerBuilder.Append($"Planar {joint.Name} rotation axis: {joint.ReturnRotationAxis()}\n");
                     }
                 }
             }
@@ -705,15 +705,15 @@ ALL_JOINTS:S:LOAD FINISHED
                      "Mech Status:\n" +
                     $"-Planeing: {Orientation.MyState()}\n\n" +
 
-                    $"CurrentWalkSet: {CurrentWalkSet.Name()}\n" +
+                    $"CurrentWalkSet: {CurrentWalkSet.Name}\n" +
                     $"-LockedFootIndex: {CurrentWalkSet.LockedIndex}\n\n" +
 
-                    $"CurrentWalk: {CurrentWalk.Name()}\n" +
+                    $"CurrentWalk: {CurrentWalk.Name}\n" +
                     $"-ClockState: {CurrentWalk.CurrentClockMode}\n" +
                     $"-ClockTime: {CurrentWalk.CurrentClockTime}\n" +
                     $"-StepDelay: {CurrentWalk.StepDelay}\n" +
                     $"-FrameLength: {CurrentWalk.CurrentFrames[0].MySetting.MyValue()}\n" +
-                    $"-LoadedFrames: {CurrentWalk.CurrentFrames[0].Name()} || {CurrentWalk.CurrentFrames[1].Name()}\n");
+                    $"-LoadedFrames: {CurrentWalk.CurrentFrames[0].Name} || {CurrentWalk.CurrentFrames[1].Name}\n");
             }
 
             catch
@@ -1115,6 +1115,9 @@ ALL_JOINTS:S:LOAD FINISHED
 
         #endregion
 
+
+
+
         #region CONSTRUCTIONS
         static JointSet NewJointSet(string groupName, int index)
         {
@@ -1136,13 +1139,21 @@ ALL_JOINTS:S:LOAD FINISHED
             if (fullSet == null)
                 return null;
 
-            RootData setRoot = new RootData(groupName, index, -1);
-            JointSet newSet = new JointSet(setRoot, CockPit, groupName);
-            List<IMyTerminalBlock> joints = GetBlocksFromGroup(fullSet);
+            //RootData setRoot = new RootData(groupName, index, -1);
+            int[] intData = new int[Enum.GetValues(typeof(PARAM_int)).Length];
+            intData[(int)PARAM_int.uIX] = index;
+            intData[(int)PARAM_int.pIX] = -1; // JointSets unparented
+
+            JointSet newSet = new JointSet(CockPit, fullSet, intData);
+            List<IMyTerminalBlock> joints = newSet.Blocks;// GetBlocksFromGroup(fullSet);
             int jointIndex = 0;
             List<IMyTerminalBlock> footBuffer;
-            RootData jRoot;
-            JointData jData = new JointData();
+            //RootData jRoot;
+            //JointData jData = new JointData();
+
+            intData[(int)PARAM_int.pIX] = index; // prepare for use with joints and feet
+
+            // Finish all foot associated joints first, leaving the remaining to be resolved and added directly to the joint set
 
             for (int f = 0; f < feet.Count; f++)
             {
@@ -1150,83 +1161,96 @@ ALL_JOINTS:S:LOAD FINISHED
                 if (footBuffer.Count < 1)
                     continue;
 
-                Foot newFoot = new Foot(newSet.ParentData(feet[f].Name, f));
+                intData[(int)PARAM_int.uIX] = f;
+                intData[(int)PARAM_int.lIX] = -1; // lock index un-benowst at this point. Modify in editor
+
+
+                Foot newFoot = new Foot(feet[f], intData);
                 newSet.Feet.Add(newFoot);
-                jData.FootIndex = f;
-                int toeIndex = 0;
+                //jData.FootIndex = f;
+                //int toeIndex = 0;
 
                 for (int b = 0; b < footBuffer.Count; b++)
                 {
                     joints.Remove(footBuffer[b]); // Remove redundancies
 
-                    bool toe = footBuffer[b].CustomName.Contains(ToeSignature);
-                    bool turn = footBuffer[b].CustomName.Contains(TurnSignature);
+                    //bool toe = footBuffer[b].CustomName.Contains(ToeSignature);
+                    //bool turn = footBuffer[b].CustomName.Contains(TurnSignature);
 
-                    jRoot = newSet.ParentData(footBuffer[b].CustomName);
-                    Static($"Name: {jRoot.Name}\n");
+                    intData[(int)PARAM_int.fIX] = f;
 
                     if (footBuffer[b] is IMyMechanicalConnectionBlock)
                     {
-                        jRoot.MyIndex = toe ? toeIndex : jointIndex;
-                        jRoot.Name = $"[{(toe ? "GRIPPER" : turn ? "TURN" : "PLANE")}]";
-                        jData.Root = jRoot;
-                        jData.TAG = toe ? GripTag : turn ? TurnTag : PlaneTag;
+                        //intData[(int)PARAM_int.uIX] = toe ? toeIndex : jointIndex;
 
-                        Static($"FootTag: {jData.TAG}\n");
+                        // name = $"[{(toe ? "GRIPPER" : turn ? "TURN" : "PLANE")}]"; // <-- Concatinate?
+                        //string TAG = toe ? GripTag : turn ? TurnTag : PlaneTag;
 
-                        jData.GripDirection = toe ? Math.Sign(footBuffer[b].GetValueFloat("Velocity")) : 0;
 
-                        Joint newJoint = NewJoint(jData, (IMyMechanicalConnectionBlock)footBuffer[b]);
+                        intData[(int)PARAM_int.GripDirection] = toe ? Math.Sign(footBuffer[b].GetValueFloat("Velocity")) : 0;
+
+                        Joint newJoint = NewJoint( (IMyMechanicalConnectionBlock)footBuffer[b], intData);
                         AppendJoint(newSet, newJoint);
 
-                        if (toe)
-                            toeIndex++;
-                        else
+                        //if (toe)
+                        //    toeIndex++;
+                        //else
                             jointIndex++;
                     }
                     if (footBuffer[b] is IMyLandingGear)
                     {
-                        jRoot.MyIndex = newFoot.Magnets.Count;
-                        jRoot.Name = "[MAGNET]";
+                        intData[(int)PARAM_int.uIX] = newFoot.Magnets.Count;
 
-                        Magnet newMagnet = NewMagnet(jRoot, (IMyLandingGear)footBuffer[b], f);
+                        Magnet newMagnet = NewMagnet((IMyLandingGear)footBuffer[b], intData);
                         AppendMagnet(newSet, newMagnet);
                     }
                 }
             }
 
-            jData.FootIndex = -1;
-            jData.GripDirection = 0;
+            intData[(int)PARAM_int.fIX] = -1;
+            intData[(int)PARAM_int.GripDirection] = 0;
 
             for (int j = 0; j < joints.Count; j++)
             {
                 if (joints[j] is IMyMechanicalConnectionBlock)
                 {
-                    jRoot = newSet.ParentData("[JOINT]", jointIndex);
-                    jData.Root = jRoot;
-                    jData.TAG = JointTag;
-
-                    Static($"GenericTag: {jData.TAG}\n");
-
                     jointIndex++;
-                    newSet.Joints.Add(NewJoint(jData, (IMyMechanicalConnectionBlock)joints[j]));
+                    newSet.Joints.Add(NewJoint((IMyMechanicalConnectionBlock)joints[j], intData));
                 }
             }
             return newSet;
         }
-        static Joint NewJoint(JointData data, IMyMechanicalConnectionBlock jointBlock)
+
+        static string ParseBlockTag(IMyTerminalBlock block, bool belongsToFoot) {
+            if (block is IMyLandingGear)
+                return MagnetTag;
+            if (!(block is IMyMechanicalConnectionBlock))
+                return string.Empty;
+            if (!belongsToFoot)
+                return JointTag;
+            if (block.CustomName.Contains(ToeSignature))
+                return GripTag;
+            if (block.CustomName.Contains(TurnSignature))
+                return TurnTag;
+            return PlaneTag;
+        }
+
+        static Joint NewJoint(IMyMechanicalConnectionBlock jointBlock, int[] intData)
         {
             Joint newJoint = null;
+            //string[] stringData = new string[Enum.GetNames(typeof(PARAM_string)).Length];
+            //stringData[(int)PARAM_string.TAG] = JointTag;
+            //stringData[(int)PARAM_string.Name] = jointBlock.CustomName;
 
             if (jointBlock is IMyPistonBase)
-                newJoint = new Piston((IMyPistonBase)jointBlock, data);
+                newJoint = new Piston((IMyPistonBase)jointBlock, intData);
 
             if (jointBlock is IMyMotorStator)
             {
                 if (jointBlock.BlockDefinition.ToString().Contains("Hinge"))
-                    newJoint = new Hinge((IMyMotorStator)jointBlock, data);
+                    newJoint = new Hinge((IMyMotorStator)jointBlock, intData);
                 else
-                    newJoint = new Rotor((IMyMotorStator)jointBlock, data);
+                    newJoint = new Rotor((IMyMotorStator)jointBlock, intData);
             }
 
             if (newJoint != null)
@@ -1234,25 +1258,30 @@ ALL_JOINTS:S:LOAD FINISHED
 
             return newJoint;
         }
-        static KeyFrame NewKeyFrame(AnimationData data, JointSet set)
+        static KeyFrame NewKeyFrame(int[] intData, JointSet set, string name = null)
         {
-            KeyFrame newKFrame = new KeyFrame(data);
 
-            for (int i = 0; i < set.Joints.Count; i++)
-            {
+            int[] jFrameIntData = new int[Enum.GetNames(typeof(PARAM_int)).Length];
+            jFrameIntData[(int)PARAM_int.pIX] = intData[(int)PARAM_int.uIX];
+
+            List<JointFrame> Jframes = new List<JointFrame>();
+
+            for (int i = 0; i < set.Joints.Count; i++) {
                 if (set.Joints[i] is Piston)
                     continue;
 
-                RootData jfRoot = newKFrame.ParentData("", i);
-                AnimationData jfData = new AnimationData(jfRoot, FrameLengthDef);
-                newKFrame.Jframes.Add(new JointFrame(jfData, set.GetJoint(i), Snapping));
+                jFrameIntData[(int)PARAM_int.uIX] = i;
+
+                Jframes.Add(new JointFrame(set.GetJoint(i), jFrameIntData, Snapping));
             }
+
+            KeyFrame newKFrame = new KeyFrame(FrameLengthDef, intData, Jframes, name);
 
             return newKFrame;
         }
-        static Magnet NewMagnet(RootData root, IMyLandingGear gear, int footIndex)
+        static Magnet NewMagnet(IMyLandingGear gear, int[] intData)
         {
-            Magnet newMagnet = new Magnet(root, gear, footIndex);
+            Magnet newMagnet = new Magnet(gear, intData);
             MagnetBin.Add(newMagnet);
             return newMagnet;
         }
@@ -1306,7 +1335,7 @@ ALL_JOINTS:S:LOAD FINISHED
                 try
                 {
                     Static("next load line...\n");
-                    string lineTag = load[i].Split(':')[(int)PARAM.TAG];
+                    string lineTag = load[i].Split(':')[(int)PARAM_custom.TAG];
                     Static($"TAG: {lineTag}\n");
 
                     switch (lineTag)
@@ -1456,7 +1485,7 @@ ALL_JOINTS:S:LOAD FINISHED
                     return true;
                 }
 
-                BlockBuffer = GetBlocksFromGroup(SetBuffer.Name());
+                BlockBuffer = SetBuffer.Blocks;
                 if (BlockBuffer == null || BlockBuffer.Count < 1)
                 {
                     Static("Nothing to load!\n");
@@ -1653,7 +1682,7 @@ ALL_JOINTS:S:LOAD FINISHED
 
             SaveData.Append($"{set.ZeroFrame.SaveData()}\n");
 
-            SaveData.Append($"{JointSetTag}:{set.Name()}:END OF SAVE\n");
+            SaveData.Append($"{JointSetTag}:{set.Name}:END OF SAVE\n");
 
             ResetSaveIndex(eRoot.FOOT);
             ResetSaveIndex(eRoot.JOINT);
@@ -1799,6 +1828,12 @@ ALL_JOINTS:S:LOAD FINISHED
         static GUIMode GetCurrentGuiMode() { return CurrentGUIMode; }
         static TimeSpan GetGridTimeSinceLastRun() { return PROG.Runtime.TimeSinceLastRun; }
         static void GetGridBlockGroups(List<IMyBlockGroup> groups) { PROG.GridTerminalSystem.GetBlockGroups(groups); }
+        static IMyBlockGroup GetGridBlockGroup(string name) {
+            if (name == null || name.Length < 1) return null;
+            List<IMyBlockGroup> groups = new List<IMyBlockGroup>();
+            PROG.GridTerminalSystem.GetBlockGroups(groups);
+            return groups.Find(x => x.Name == name);
+        }
         static void GetGridBlocksOfType<T>(List<T> blocks) where T : class { blocks = new List<T>(); PROG.GridTerminalSystem.GetBlocksOfType(blocks); }
         static IMyTextSurface GetSurface(Screen screen) { try { return Screens[(int)screen]; } catch { return null; } }
         static List<IMyTerminalBlock> GetBlocksFromGroup(string groupName)

@@ -10,16 +10,15 @@ namespace IngameScript
         {
             public List<Root> Jframes = new List<Root>();
 
-            public KeyFrame(AnimationData root, List<Root> jFrames = null) : base(root)
+            public KeyFrame(float init, int[] intData, List<JointFrame> jFrames = null, string name = null) : base(init, name, intData)
             {
                 TAG = KframeTag;
-                Jframes = jFrames != null ? jFrames : new List<Root>();
-                GenerateSetting(FrameLengthDef);
+                if (jFrames != null) Jframes.AddRange(jFrames);
             }
             public KeyFrame(string input, List<JointFrame> buffer) : base(input)
             {
                 Jframes.AddRange(buffer);
-                BUILT = Load(input);
+                //BUILT = Load(input);
             }
 
             public JointFrame GetJointFrameByJointIndex(int index)

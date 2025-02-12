@@ -1,5 +1,6 @@
 ﻿//using Sandbox.ModAPI;
 
+using System;
 using System.Collections.Generic;
 
 namespace IngameScript
@@ -8,39 +9,55 @@ namespace IngameScript
     {
         class Root
         {
+            //public RootData data;
+
+            public virtual string Name {
+                get { return "[ROOT]"; }
+                set { Static("No name value to set!\n"); }
+            }
+
             public string TAG;
             public int MyIndex;
             public int ParentIndex;
+
             public bool BUILT;
-            string[] SaveBuffer = new string[JointParamCount];
+            static string[] SaveBuffer = new string[JointParamCount];
 
-            public virtual string Name()
+            //public virtual string Name()
+            //{
+            //    return "[ROOT]";
+            //}
+            //
+            //public virtual void SetName(string newName)
+            //{
+            //    Static("No name value to set!\n");
+            //}
+
+            public Root(string input)
             {
-                return "[ROOT]";
+                BUILT = Load(input);
             }
 
-            public virtual void SetName(string newName)
+            public Root(int[] intData, string name = null)
             {
-                Static("No name value to set!\n");
-            }
-
-            public Root()
-            {
+                Name = name;
+                //TAG = stringData[(int)PARAM_string.TAG];
+                MyIndex = intData[(int)PARAM_int.uIX];
+                ParentIndex = intData[(int)PARAM_int.pIX];
                 BUILT = true;
             }
 
-            public Root(RootData data)
-            {
-                SetName(data.Name);
-                MyIndex = data.MyIndex;
-                ParentIndex = data.ParentIndex;
-                BUILT = true;
+            public virtual int[] IntParams() {
+                int[] result =  new int[Enum.GetValues(typeof(PARAM_int)).Length];
+                result[(int)PARAM_int.uIX] = MyIndex;
+                result[(int)PARAM_int.pIX] = ParentIndex;
+                return result;
             }
 
-            public RootData ParentData(string name = null, int index = -1)
-            {
-                return new RootData(name, index, MyIndex);
-            }
+            //public RootData ParentData(string name = null, int index = -1)
+            //{
+            //    return new RootData(name, index, MyIndex);
+            //}
             public void StaticDlog(string input, bool newLine = true)
             {
                 Static($"{input}{(newLine ? "\n" : "")}");
@@ -58,10 +75,10 @@ namespace IngameScript
             {
                 try
                 {
-                    SetName(data[(int)PARAM.Name]);
-                    TAG = data[(int)PARAM.TAG];
-                    MyIndex = int.Parse(data[(int)PARAM.uIX]);
-                    ParentIndex = int.Parse(data[(int)PARAM.pIX]);
+                    Name = data[(int)PARAM_custom.Name];
+                    TAG = data[(int)PARAM_custom.TAG];
+                    MyIndex = int.Parse(data[(int)PARAM_custom.uIX]);
+                    ParentIndex = int.Parse(data[(int)PARAM_custom.pIX]);
 
                     return true;
                 }
@@ -85,10 +102,10 @@ namespace IngameScript
             }
             protected virtual void saveData(string[] saveBuffer)
             {
-                saveBuffer[(int)PARAM.Name] = Name();
-                saveBuffer[(int)PARAM.TAG] = TAG;
-                saveBuffer[(int)PARAM.uIX] = MyIndex.ToString();
-                saveBuffer[(int)PARAM.pIX] = ParentIndex.ToString();
+                saveBuffer[(int)PARAM_custom.Name] = Name;
+                saveBuffer[(int)PARAM_custom.TAG] = TAG;
+                saveBuffer[(int)PARAM_custom.uIX] = MyIndex.ToString();
+                saveBuffer[(int)PARAM_custom.pIX] = ParentIndex.ToString();
             }
             public virtual void Insert(Root root, int index = -1) { }
             public virtual void Remove(int index, eRoot type = eRoot.DEFAULT) { }

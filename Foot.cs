@@ -1,34 +1,34 @@
-﻿//using Sandbox.ModAPI;
+﻿using Sandbox.ModAPI.Ingame;
 using System;
 using System.Collections.Generic;
 using VRageMath;
 
 namespace IngameScript
 {
-
-
     partial class Program
     {
-        class Foot : Root
-        {
+        class Foot : Group {
+
             public List<Root> Toes = new List<Root>();
             public List<Root> Planars = new List<Root>();
             public List<Root> Magnets = new List<Root>();
 
-            public int LockIndex;
-            public bool Locked = false;
             public bool Planeing;
             public Vector3 PlanarRatio;
 
-            public Foot(RootData data) : base(data)
-            {
-                TAG = FootTag;
+            public override string Name {
+                get { return $"[FOOT:{MyIndex}]"; }
             }
 
-            public Foot(string input) : base()
+            public Foot(IMyBlockGroup group, int[] intData) : base(group, intData)
             {
-                StaticDlog("Foot Constructor:");
-                BUILT = Load(input);
+                LockedIndex = intData[(int)PARAM_int.lIX];
+            }
+
+            public Foot(string input) : base(input)
+            {
+                //StaticDlog("Foot Constructor:");
+                //BUILT = Load(input);
             }
 
             public Joint GetToe(int index)
@@ -50,11 +50,6 @@ namespace IngameScript
                 return (Magnet)Magnets[index];
             }
 
-            public override string Name()
-            {
-                return $"[FOOT:{MyIndex}]";
-            }
-
             public void GearInit()
             {
                 foreach (Magnet magnet in Magnets)
@@ -70,6 +65,9 @@ namespace IngameScript
                 ToggleForce(locking);
                 UpdateFootPlaneing(Planeing);
             }
+
+            // + - * / 
+
             public bool CheckTouching()
             {
                 bool result = false;
@@ -134,21 +132,21 @@ namespace IngameScript
                     PlanarRatio.SetDim(i, 1 / PlanarRatio.GetDim(i));
             }
 
-            protected override bool Load(string[] data)
-            {
-                if (!base.Load(data))
-                    return false;
+            //protected override bool Load(string[] data)
+            //{
+            //    if (!base.Load(data))
+            //        return false;
+            //
+            //    try { LockIndex = int.Parse(data[(int)PARAM_custom.lIX]); }
+            //    catch { LockIndex = -1; }
+            //    return true;
+            //}
 
-                try { LockIndex = int.Parse(data[(int)PARAM.lIX]); }
-                catch { LockIndex = -1; }
-                return true;
-            }
-
-            protected override void saveData(string[] buffer)
-            {
-                base.saveData(buffer);
-                buffer[(int)PARAM.lIX] = LockIndex.ToString();
-            }
+            //protected override void saveData(string[] buffer)
+            //{
+            //    base.saveData(buffer);
+            //    buffer[(int)PARAM_custom.lIX] = LockIndex.ToString();
+            //}
         }
 
     }

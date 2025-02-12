@@ -5,7 +5,7 @@ namespace IngameScript
     partial class Program
     {
 
-        struct JointData
+        /*struct JointData
         {
             public static JointData Default = new JointData(RootData.Default, JointTag, -1, -1, 0);
 
@@ -23,7 +23,7 @@ namespace IngameScript
                 SyncIndex = syncIndex;
                 GripDirection = gripDirection;
             }
-        }
+        }*/
 
     }
 }

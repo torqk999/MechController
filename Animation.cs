@@ -7,26 +7,20 @@ namespace IngameScript
         class Animation : Root
         {
             protected string _name;
+            public override string Name {
+                get { return _name; }
+                set { _name = value; }
+            }
             public Setting MySetting;
 
-            public Animation(AnimationData data) : base(data.Root)
+            public Animation(float init, string name, int[] intData) : base(intData, name)
             {
-                GenerateSetting(data.InitValue);
+                GenerateSetting(init);
             }
 
-            public Animation(string input) : base()
+            public Animation(string input) : base(input)
             {
-                //BUILT = Load(input);
-            }
-
-            public override string Name()
-            {
-                return _name;
-            }
-
-            public override void SetName(string newName)
-            {
-                _name = newName;
+          
             }
 
             public virtual void GenerateSetting(float init)
@@ -39,7 +33,7 @@ namespace IngameScript
                     return false;
 
                 try {
-                    GenerateSetting(float.Parse(data[(int)PARAM.SettingInit]));
+                    GenerateSetting(float.Parse(data[(int)PARAM_custom.SettingInit]));
                 }
                 catch {
                     GenerateSetting(0);
@@ -50,7 +44,7 @@ namespace IngameScript
             protected override void saveData(string[] buffer)
             {
                 base.saveData(buffer);
-                buffer[(int)PARAM.SettingInit] = (MySetting == null ? 0 : MySetting.MyValue()).ToString();
+                buffer[(int)PARAM_custom.SettingInit] = (MySetting == null ? 0 : MySetting.MyValue()).ToString();
             }
         }
 

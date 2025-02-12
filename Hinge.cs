@@ -12,7 +12,7 @@ namespace IngameScript
         {
             public IMyMotorStator Stator;
 
-            public Hinge(IMyMotorStator stator, JointData data) : base(stator, data)
+            public Hinge(IMyMotorStator stator, int[] intData) : base(stator, intData)
             {
                 Stator = stator;
             }

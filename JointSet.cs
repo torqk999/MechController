@@ -10,9 +10,13 @@ namespace IngameScript
     {
 
 
-        class JointSet : Root
+        class JointSet : Group
         {
-            string _name;
+            //string _name;
+            //public override string Name {
+            //    get { return _name; }
+            //    set { _name = value; }
+            //}
 
             public IMyTerminalBlock Plane;
             public List<Root> Feet = new List<Root>();
@@ -27,39 +31,33 @@ namespace IngameScript
             public Vector3D PlaneBuffer;
             public Vector3D TurnBuffer;
 
-            public bool Locked;
+            //public bool Locked;
             public bool StepInterrupt;
-            public int LockedIndex;
+            //public int LockedIndex;
             int ReleaseTimer = 0;
 
-            public JointSet(RootData root, IMyTerminalBlock plane, string groupName) : base(root)
+            public JointSet(IMyTerminalBlock plane, IMyBlockGroup group, int[] intData) : base(group, intData)
             {
                 TAG = JointSetTag;
                 Plane = plane;
-                _name = groupName;
+                //_name = stringData[(int)PARAM_string.Name];
                 GenerateZeroFrame();
             }
 
-            public JointSet(string input, IMyTerminalBlock plane, List<Foot> buffer) : base()
+            public JointSet(string input, IMyTerminalBlock plane, List<Foot> buffer) : base(input)
             {
                 Plane = plane;
                 Feet.AddRange(buffer);
-                BUILT = Load(input);
-            }
-
-            public override string Name()
-            {
-                return _name;
-            }
-
-            public override void SetName(string newName)
-            {
-                _name = newName;
             }
 
             public void GenerateZeroFrame()
             {
-                ZeroFrame = NewKeyFrame(new AnimationData(ParentData("Zero Frame"), FrameLengthDef), this);
+                int[] intData = new int[Enum.GetNames(typeof(PARAM_int)).Length];
+
+                intData[(int)PARAM_int.uIX] = -1;
+                intData[(int)PARAM_int.pIX] = MyIndex;
+
+                ZeroFrame = NewKeyFrame(intData, this, "Zero Frame");
             }
 
             public Foot GetFoot(int index)
@@ -266,7 +264,7 @@ namespace IngameScript
 
                         if (CurrentWalk != null)
                         {
-                            CurrentWalk.LoadKeyFrames(true, check.LockIndex);
+                            CurrentWalk.LoadKeyFrames(true, check.LockedIndex);
                             CurrentWalk.StepDelay = true;
                         }
 

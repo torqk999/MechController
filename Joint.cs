@@ -13,8 +13,11 @@ namespace IngameScript
 
         class Joint : Functional
         {
-            public int FootIndex;
+            //public int FootIndex;
             public int SyncIndex;
+            /// <summary>
+            /// Currently overriding seqence index. -1 if not controlled by a sequence.
+            /// </summary>
             public int OverrideIndex = -1;
             public int GripDirection;
             public bool LargeGrid;
@@ -37,22 +40,21 @@ namespace IngameScript
             public double TargetVelocity;
             public double OldVelocity;
             public double LiteralVelocity; // Not used atm? but it works! : D
-            public double LastPosition;
+            public double OldTarget;
 
             public Vector3 PlanarDots;
             public JointSet Parent => GetJointSet(ParentIndex);
 
-            public Joint(IMyMechanicalConnectionBlock mechBlock, JointData data) : base(mechBlock, data.Root)
+            public Joint(IMyMechanicalConnectionBlock mechBlock, int[] intData) : base(mechBlock, intData)
             {
-                StaticDlog("Joint Constructor:");
+                //StaticDlog("Joint Constructor:");
+                //TAG = tag == null ? JointTag : tag;
+
                 LargeGrid = mechBlock.BlockDefinition.ToString().Contains("Large");
                 Connection = mechBlock;
                 Connection.Enabled = true;
-                FootIndex = data.FootIndex;
-                SyncIndex = data.SyncIndex;
-                GripDirection = data.GripDirection;
-                TAG = data.TAG;
-                //SetForce(true);
+                SyncIndex = intData[(int)PARAM_int.sIX];
+                GripDirection = TAG == //intData[(int)PARAM_int.GripDirection];
             }
 
             public Joint(IMyMechanicalConnectionBlock mechBlock) : base(mechBlock)
@@ -60,21 +62,15 @@ namespace IngameScript
                 LargeGrid = mechBlock.BlockDefinition.ToString().Contains("Large");
                 Connection = mechBlock;
                 Connection.Enabled = true;
-                BUILT = Load(mechBlock == null ? null : mechBlock.CustomData);
             }
-            public bool IsAlive()
-            {
-                try { return Connection.IsWorking; }
-                catch { return false; }
-            }
-            public override List<int> Indexes()
-            {
-                List<int> indexes = base.Indexes();
-                indexes.Add(FootIndex);
-                indexes.Add(GripDirection);
-                indexes.Add(SyncIndex);
 
-                return indexes;
+            public override int[] IntParams()
+            {
+                int[] result = base.IntParams();
+                result[(int)PARAM_int.fIX] = FootIndex;
+                result[(int)PARAM_int.GripDirection] = GripDirection;
+                result[(int)PARAM_int.sIX] = SyncIndex;
+                return result;
             }
             public virtual void Sync()
             {
@@ -95,9 +91,9 @@ namespace IngameScript
 
                 try
                 {
-                    FootIndex = int.Parse(data[(int)PARAM.fIX]);
-                    GripDirection = int.Parse(data[(int)PARAM.GripDirection]);
-                    SyncIndex = int.Parse(data[(int)PARAM.sIX]);
+                    FootIndex = int.Parse(data[(int)PARAM_custom.fIX]);
+                    GripDirection = int.Parse(data[(int)PARAM_custom.GripDirection]);
+                    SyncIndex = int.Parse(data[(int)PARAM_custom.sIX]);
                 }
                 catch
                 {
@@ -110,9 +106,9 @@ namespace IngameScript
             protected override void saveData(string[] buffer)
             {
                 base.saveData(buffer);
-                buffer[(int)PARAM.fIX] = FootIndex.ToString();
-                buffer[(int)PARAM.sIX] = SyncIndex.ToString();
-                buffer[(int)PARAM.GripDirection] = GripDirection.ToString();
+                buffer[(int)PARAM_custom.fIX] = FootIndex.ToString();
+                buffer[(int)PARAM_custom.sIX] = SyncIndex.ToString();
+                buffer[(int)PARAM_custom.GripDirection] = GripDirection.ToString();
             }
             public void LoadJointFrames(JointFrame zero, JointFrame one, bool forward, bool interrupt)
             {
@@ -148,8 +144,8 @@ namespace IngameScript
             void UpdateLiteralVelocity()
             {
                 double currentPosition = CurrentPosition();
-                LiteralVelocity = ((currentPosition - LastPosition) / 360) / GetGridTimeSinceLastRun().TotalMinutes;
-                LastPosition = currentPosition;
+                LiteralVelocity = ((currentPosition - OldTarget) / 360) / GetGridTimeSinceLastRun().TotalMinutes;
+                OldTarget = currentPosition;
             }
             void UpdateStatorVelocity(bool active)
             {

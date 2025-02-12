@@ -10,44 +10,49 @@ namespace IngameScript
 
         class Magnet : Functional
         {
-            public int FootIndex;
+            //public int FootIndex;
             public IMyLandingGear Gear;
-            public Magnet(RootData root, IMyLandingGear gear, int footIndex) : base(gear, root)
+            public Magnet(IMyLandingGear gear, int[] intData) : base(gear, intData)
             {
                 TAG = MagnetTag;
-                FootIndex = footIndex;
                 Gear = gear;
             }
             public Magnet(IMyLandingGear gear) : base(gear)
             {
                 Gear = gear;
-                BUILT = Load(gear == null ? null : gear.CustomData);
             }
 
-            public override List<int> Indexes()
-            {
-                List<int> indexes = base.Indexes();
+            //public override int[] IntParams() {
+            //    int[] result = base.IntParams();
+            //
+            //    result[(int)PARAM_int.fIX] = FootIndex;
+            //
+            //    return result;
+            //}
 
-                indexes.Add(FootIndex);
-
-                return indexes;
-            }
+            //public override List<int> Indexes()
+            //{
+            //    List<int> indexes = base.Indexes();
+            //
+            //    indexes.Add(FootIndex);
+            //
+            //    return indexes;
+            //}
 
             protected override bool Load(string[] data)
             {
                 if (!base.Load(data))
                     return false;
 
-                try { FootIndex = int.Parse(data[(int)PARAM.fIX]); }
+                try { FootIndex = int.Parse(data[(int)PARAM_custom.fIX]); }
                 catch { FootIndex = -1; }
                 return true;
             }
 
-
             protected override void saveData(string[] buffer)
             {
                 base.saveData(buffer);
-                buffer[(int)PARAM.fIX] = FootIndex.ToString();
+                buffer[(int)PARAM_custom.fIX] = FootIndex.ToString();
             }
 
             public void InitializeGear()
@@ -71,11 +76,11 @@ namespace IngameScript
                 }
 
             }
-            public bool IsAlive()
-            {
-                try { return Gear.IsWorking; }
-                catch { return false; }
-            }
+            //public bool IsAlive()
+            //{
+            //    try { return Gear.IsWorking; }
+            //    catch { return false; }
+            //}
             public bool IsTouching()
             {
                 return Gear.LockMode == LandingGearMode.ReadyToLock;
