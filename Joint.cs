@@ -13,15 +13,16 @@ namespace IngameScript
 
         class Joint : Functional
         {
-            //public int FootIndex;
-            public int SyncIndex;
+            //public int UniqueID;
+            public int SyncID;
+            public int GripDirection;
             /// <summary>
             /// Currently overriding seqence index. -1 if not controlled by a sequence.
             /// </summary>
-            public int OverrideIndex = -1;
-            public int GripDirection;
+            public int OverrideSequenceID = -1;
+            
             public bool LargeGrid;
-            public IMyMechanicalConnectionBlock Connection;
+            public IMyMechanicalConnectionBlock Connection => (IMyMechanicalConnectionBlock)FuncBlock;
 
             // Instance
             public double[] LerpPoints = new double[2];
@@ -43,35 +44,33 @@ namespace IngameScript
             public double OldTarget;
 
             public Vector3 PlanarDots;
-            public JointSet Parent => GetJointSet(ParentIndex);
+            //public JointSet Parent => GetJointSet(ParentID);
 
-            public Joint(IMyMechanicalConnectionBlock mechBlock, int[] intData) : base(mechBlock, intData)
+            public Joint(IMyMechanicalConnectionBlock mechBlock, int uniqueID, int footID = -1) : base(mechBlock, uniqueID, footID)
             {
                 //StaticDlog("Joint Constructor:");
                 //TAG = tag == null ? JointTag : tag;
 
                 LargeGrid = mechBlock.BlockDefinition.ToString().Contains("Large");
-                Connection = mechBlock;
                 Connection.Enabled = true;
-                SyncIndex = intData[(int)PARAM_int.sIX];
-                GripDirection = TAG == //intData[(int)PARAM_int.GripDirection];
+                SyncID = -1;
+                GripDirection = TAG == GripTag ? Math.Sign(Connection.GetValueFloat("Velocity")) : 0;
             }
 
             public Joint(IMyMechanicalConnectionBlock mechBlock) : base(mechBlock)
             {
                 LargeGrid = mechBlock.BlockDefinition.ToString().Contains("Large");
-                Connection = mechBlock;
                 Connection.Enabled = true;
             }
 
-            public override int[] IntParams()
-            {
-                int[] result = base.IntParams();
-                result[(int)PARAM_int.fIX] = FootIndex;
-                result[(int)PARAM_int.GripDirection] = GripDirection;
-                result[(int)PARAM_int.sIX] = SyncIndex;
-                return result;
-            }
+            //public override int[] IntParams()
+            //{
+            //    int[] result = base.IntParams();
+            //    result[(int)PARAM_int.fIX] = FootID;
+            //    result[(int)PARAM_int.GripDirection] = GripDirection;
+            //    result[(int)PARAM_int.sIX] = SyncID;
+            //    return result;
+            //}
             public virtual void Sync()
             {
 
@@ -91,24 +90,24 @@ namespace IngameScript
 
                 try
                 {
-                    FootIndex = int.Parse(data[(int)PARAM_custom.fIX]);
-                    GripDirection = int.Parse(data[(int)PARAM_custom.GripDirection]);
-                    SyncIndex = int.Parse(data[(int)PARAM_custom.sIX]);
+                    FootID = int.Parse(data[(int)SaveDataAttribute.FootID]);
+                    GripDirection = int.Parse(data[(int)SaveDataAttribute.GripDirection]);
+                    SyncID = int.Parse(data[(int)SaveDataAttribute.SyncID]);
                 }
                 catch
                 {
-                    FootIndex = -1;
+                    FootID = -1;
                     GripDirection = 0;
-                    SyncIndex = -1;
+                    SyncID = -1;
                 }
                 return true;
             }
             protected override void saveData(string[] buffer)
             {
                 base.saveData(buffer);
-                buffer[(int)PARAM_custom.fIX] = FootIndex.ToString();
-                buffer[(int)PARAM_custom.sIX] = SyncIndex.ToString();
-                buffer[(int)PARAM_custom.GripDirection] = GripDirection.ToString();
+                buffer[(int)SaveDataAttribute.FootID] = FootID.ToString();
+                buffer[(int)SaveDataAttribute.SyncID] = SyncID.ToString();
+                buffer[(int)SaveDataAttribute.GripDirection] = GripDirection.ToString();
             }
             public void LoadJointFrames(JointFrame zero, JointFrame one, bool forward, bool interrupt)
             {

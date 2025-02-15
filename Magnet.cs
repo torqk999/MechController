@@ -11,48 +11,24 @@ namespace IngameScript
         class Magnet : Functional
         {
             //public int FootIndex;
-            public IMyLandingGear Gear;
-            public Magnet(IMyLandingGear gear, int[] intData) : base(gear, intData)
-            {
-                TAG = MagnetTag;
-                Gear = gear;
-            }
-            public Magnet(IMyLandingGear gear) : base(gear)
-            {
-                Gear = gear;
-            }
-
-            //public override int[] IntParams() {
-            //    int[] result = base.IntParams();
-            //
-            //    result[(int)PARAM_int.fIX] = FootIndex;
-            //
-            //    return result;
-            //}
-
-            //public override List<int> Indexes()
-            //{
-            //    List<int> indexes = base.Indexes();
-            //
-            //    indexes.Add(FootIndex);
-            //
-            //    return indexes;
-            //}
+            public IMyLandingGear Gear => (IMyLandingGear)FuncBlock;
+            public Magnet(IMyLandingGear gear, int uniqueID, int footID = -1) : base(gear, uniqueID, footID) { }
+            public Magnet(IMyLandingGear gear) : base(gear) { }
 
             protected override bool Load(string[] data)
             {
                 if (!base.Load(data))
                     return false;
 
-                try { FootIndex = int.Parse(data[(int)PARAM_custom.fIX]); }
-                catch { FootIndex = -1; }
+                try { FootID = int.Parse(data[(int)SaveDataAttribute.FootID]); }
+                catch { FootID = -1; }
                 return true;
             }
 
             protected override void saveData(string[] buffer)
             {
                 base.saveData(buffer);
-                buffer[(int)PARAM_custom.fIX] = FootIndex.ToString();
+                buffer[(int)SaveDataAttribute.FootID] = FootID.ToString();
             }
 
             public void InitializeGear()
@@ -76,11 +52,7 @@ namespace IngameScript
                 }
 
             }
-            //public bool IsAlive()
-            //{
-            //    try { return Gear.IsWorking; }
-            //    catch { return false; }
-            //}
+
             public bool IsTouching()
             {
                 return Gear.LockMode == LandingGearMode.ReadyToLock;

@@ -5,12 +5,12 @@ namespace IngameScript
 {
     partial class Program
     {
-        class RootSort : Comparer<Root>
+        class RootSort : IComparer<Root>
         {
-            public override int Compare(Root x, Root y)
+            public int Compare(Root x, Root y)
             {
                 if (x != null && y != null)
-                    return x.MyIndex.CompareTo(y.MyIndex);
+                    return x.UniqueID.CompareTo(y.UniqueID);
                 else
                     return 0;
             }

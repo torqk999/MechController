@@ -2,62 +2,42 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace IngameScript
 {
     partial class Program
     {
-        class Root
-        {
-            //public RootData data;
-
+        class Root {
             public virtual string Name {
                 get { return "[ROOT]"; }
                 set { Static("No name value to set!\n"); }
             }
 
-            public string TAG;
-            public int MyIndex;
-            public int ParentIndex;
+            public string TAG = string.Empty;
+            public int UniqueID;
+
+            public Root Parent;
 
             public bool BUILT;
-            static string[] SaveBuffer = new string[JointParamCount];
-
-            //public virtual string Name()
-            //{
-            //    return "[ROOT]";
-            //}
-            //
-            //public virtual void SetName(string newName)
-            //{
-            //    Static("No name value to set!\n");
-            //}
-
+            static string[] SaveBuffer = new string[EnumLength(typeof(SaveDataAttribute))];
             public Root(string input)
             {
                 BUILT = Load(input);
             }
-
-            public Root(int[] intData, string name = null)
+            public Root(int uniqueID, string name = null)
             {
                 Name = name;
-                //TAG = stringData[(int)PARAM_string.TAG];
-                MyIndex = intData[(int)PARAM_int.uIX];
-                ParentIndex = intData[(int)PARAM_int.pIX];
+                UniqueID = uniqueID;
                 BUILT = true;
             }
 
-            public virtual int[] IntParams() {
-                int[] result =  new int[Enum.GetValues(typeof(PARAM_int)).Length];
-                result[(int)PARAM_int.uIX] = MyIndex;
-                result[(int)PARAM_int.pIX] = ParentIndex;
-                return result;
-            }
+            public virtual void AddChild<T>(T child) where T : Root { }
+            public virtual void AddChildren<T>(List<T> children) where T : Root { }
+            public virtual T GetChildByID<T>(int ID) where T : Root{ return null; }
+            public virtual T GetChildByIndex<T>(int index) where T : Root{ return null; }
 
-            //public RootData ParentData(string name = null, int index = -1)
-            //{
-            //    return new RootData(name, index, MyIndex);
-            //}
+
             public void StaticDlog(string input, bool newLine = true)
             {
                 Static($"{input}{(newLine ? "\n" : "")}");
@@ -75,20 +55,19 @@ namespace IngameScript
             {
                 try
                 {
-                    Name = data[(int)PARAM_custom.Name];
-                    TAG = data[(int)PARAM_custom.TAG];
-                    MyIndex = int.Parse(data[(int)PARAM_custom.uIX]);
-                    ParentIndex = int.Parse(data[(int)PARAM_custom.pIX]);
+                    Name = data[(int)SaveDataAttribute.Name];
+                    TAG = data[(int)SaveDataAttribute.TAG];
+                    UniqueID = int.Parse(data[(int)SaveDataAttribute.UniqueID]);
 
                     return true;
                 }
                 catch { return false; }
             }
-            public string[] SaveDataArray()
-            {
-                saveData(SaveBuffer);
-                return SaveBuffer;
-            }
+            //public string[] SaveDataArray()
+            //{
+            //    saveData(SaveBuffer);
+            //    return SaveBuffer;
+            //}
             public string SaveData()
             {
                 saveData(SaveBuffer);
@@ -102,66 +81,9 @@ namespace IngameScript
             }
             protected virtual void saveData(string[] saveBuffer)
             {
-                saveBuffer[(int)PARAM_custom.Name] = Name;
-                saveBuffer[(int)PARAM_custom.TAG] = TAG;
-                saveBuffer[(int)PARAM_custom.uIX] = MyIndex.ToString();
-                saveBuffer[(int)PARAM_custom.pIX] = ParentIndex.ToString();
-            }
-            public virtual void Insert(Root root, int index = -1) { }
-            public virtual void Remove(int index, eRoot type = eRoot.DEFAULT) { }
-            public virtual void Swap(int target, int delta, eRoot type = eRoot.DEFAULT) { }
-            public virtual void ReParent(int target, int parentDes, eRoot type = eRoot.DEFAULT) { }
-            public virtual void ReIndex(eRoot type = eRoot.DEFAULT) { }
-            public virtual void Sort(eRoot type = eRoot.DEFAULT) { }
-
-            protected void insert(List<Root> roots, Root root, int index)
-            {
-                if (index < 0 || index >= roots.Count)
-                {
-                    root.MyIndex = roots.Count;
-                    roots.Add(root);
-                    return;
-                }
-
-                roots.Insert(index, root);
-
-                for (int i = index + 1; i < roots.Count; i++)
-                    roots[i].MyIndex = i;
-            }
-            protected void remove(List<Root> roots, int index)
-            {
-                if (index < 0 || index >= roots.Count)
-                    return;
-
-                roots.RemoveAt(index);
-                for (int i = index + 1; i < roots.Count; i++)
-                    roots[i].MyIndex = i;
-            }
-            protected void swap(List<Root> roots, int target, int destination)
-            {
-                if (roots == null || target < 0 || target >= roots.Count)
-                    return;
-
-                while (destination < 0 || destination >= roots.Count)
-                    destination += destination < 0 ? roots.Count : destination >= roots.Count ? -roots.Count : 0;
-                
-                Root buffer = roots[destination];
-                //int bufferIndex = buffer.MyIndex;
-
-                roots[destination] = roots[target];
-                roots[target] = buffer;
-
-                roots[destination].MyIndex = destination;
-                roots[target].MyIndex = target;
-            }
-            protected void reParent(List<Root> targetRoots, List<Root> destRoots, int targetIndex, int desIndex)
-            {
-
-            }
-            protected void reIndex(List<Root> roots)
-            {
-                for (int i = 0; i < roots.Count; i++)
-                    roots[i].MyIndex = i;
+                saveBuffer[(int)SaveDataAttribute.Name] = Name;
+                saveBuffer[(int)SaveDataAttribute.TAG] = TAG;
+                saveBuffer[(int)SaveDataAttribute.UniqueID] = UniqueID.ToString();
             }
 
         }

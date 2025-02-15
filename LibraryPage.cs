@@ -167,17 +167,17 @@ namespace IngameScript
                 if (jSet == null || CurrentDirectoryLayer == eRoot.JSET)
                     return jSet;
 
-                Sequence sequence = jSet.GetSequence(SelectedIndex(eRoot.SEQUENCE));
+                Sequence sequence = jSet.GetChildByIndex<Sequence>(SelectedIndex(eRoot.SEQUENCE));
 
                 if (sequence == null || CurrentDirectoryLayer == eRoot.SEQUENCE)
                     return sequence;
 
-                KeyFrame keyFrame = sequence.GetKeyFrame(SelectedIndex(eRoot.K_FRAME));
+                KeyFrame keyFrame = sequence.GetChildByIndex<KeyFrame>(SelectedIndex(eRoot.K_FRAME));
 
                 if (keyFrame == null || CurrentDirectoryLayer == eRoot.K_FRAME)
                     return keyFrame;
 
-                JointFrame jFrame = keyFrame.GetJointFrameByFrameIndex(SelectedIndex(eRoot.J_FRAME));
+                JointFrame jFrame = keyFrame.GetChildByIndex<JointFrame>(SelectedIndex(eRoot.J_FRAME));
 
                 return jFrame;
             }
@@ -223,7 +223,7 @@ namespace IngameScript
                 if (CurrentDirectoryLayer == eRoot.JSET)
                     return;
 
-                LoadWalk(CurrentWalkSet.GetSequence(SelectedIndex(eRoot.SEQUENCE)));
+                LoadWalk(CurrentWalkSet.GetChildByIndex<Sequence>(SelectedIndex(eRoot.SEQUENCE)));
 
                 if (CurrentDirectoryLayer == eRoot.SEQUENCE)
                     return;
@@ -248,14 +248,14 @@ namespace IngameScript
                 }
 
                 JsetBin.Insert(index, NewJointSet(name, index));
-                ReIndexSets();
+                //ReIndexSets();
 
             }
-            void ReIndexSets()
-            {
-                for (int i = 0; i < JsetBin.Count; i++)
-                    JsetBin[i].MyIndex = i;
-            }
+            //void ReIndexSets()
+            //{
+            //    for (int i = 0; i < JsetBin.Count; i++)
+            //        JsetBin[i].UniqueID = i;
+            //}
             void AdjustValue(Animation anim, bool increase)
             {
                 if (anim == null)
@@ -309,26 +309,27 @@ namespace IngameScript
                         if (name == null)
                             name = $"New Sequence";
 
-                        int[] intData = new int[Enum.GetNames(typeof(PARAM_int)).Length];
-                        intData[(int)PARAM_int.uIX] = index;
-                        intData[(int)PARAM_int.pIX] = set.MyIndex;
+                        //int[] intData = new int[Enum.GetNames(typeof(PARAM_int)).Length];
+                        //intData[(int)PARAM_int.uIX] = index;
+                        //intData[(int)PARAM_int.pIX] = set.UniqueID;
 
                         //RootData seqRoot = set.ParentData(name, index);
                         //AnimationData seqData = new AnimationData(seqRoot, ClockSpeedDef);
-                        set.Insert(new Sequence(ClockSpeedDef, name, intData, set), index);
+                        set.Sequences.Insert(index, new Sequence(ClockSpeedDef, UniqueID(set.Sequences), name));
+                        //set.Insert(, index);
                         break;
 
                     case eRoot.K_FRAME:
 
                         set = GetSelectedSet();
-                        seq = set.GetSequence(SelectedIndex(eRoot.SEQUENCE));
+                        seq = set.GetChildByIndex<Sequence>(SelectedIndex(eRoot.SEQUENCE));
                         index = SelectedIndex(eRoot.K_FRAME);
                         index += add ? 1 : 0;
 
                         if (name == null)
                             name = $"New Frame";
 
-                        seq.AddKeyFrameSnapshot(index, name, Snapping);
+                        seq.AddKeyFrameSnapshot(index, name);
                         break;
                 }
 
@@ -407,10 +408,10 @@ namespace IngameScript
                     limb = GetSelectedSet();
 
                 if (limb != null && limb.Sequences.Count > SelectedIndex(eRoot.SEQUENCE))
-                    seq = limb.GetSequence(SelectedIndex(eRoot.SEQUENCE));
+                    seq = limb.GetChildByIndex<Sequence>(SelectedIndex(eRoot.SEQUENCE));
 
                 if (seq != null && seq.Frames.Count > SelectedIndex(eRoot.K_FRAME))
-                    frame = seq.GetKeyFrame(SelectedIndex(eRoot.K_FRAME));
+                    frame = seq.GetChildByIndex<KeyFrame>(SelectedIndex(eRoot.K_FRAME));
 
                 if (limb == null && CurrentDirectoryLayer > eRoot.JSET)
                     CurrentDirectoryLayer = eRoot.JSET;
@@ -475,7 +476,7 @@ namespace IngameScript
                         continue;
 
                     CursorIndex = cursorCounter;
-                    Sequence seq = set.GetSequence(seqIndex);
+                    Sequence seq = set.GetChildByIndex<Sequence>(seqIndex);
                     SequenceStringBuilder(seq);
                 }
             }
@@ -492,7 +493,7 @@ namespace IngameScript
                         continue;
 
                     CursorIndex = cursorCounter;
-                    KeyFrame kFrame = seq.GetKeyFrame(kFrameIndex);
+                    KeyFrame kFrame = seq.GetChildByIndex<KeyFrame>(kFrameIndex);
                     KframeStringBuilder(kFrame);
                 }
             }
@@ -503,13 +504,13 @@ namespace IngameScript
 
                 for (int jFrameIndex = 0; jFrameIndex < kFrame.Jframes.Count(); jFrameIndex++)
                 {
-                    JointFrame jFrame = kFrame.GetJointFrameByFrameIndex(jFrameIndex);
+                    JointFrame jFrame = kFrame.GetChildByIndex<JointFrame>(jFrameIndex);
                     JframeStringBuilder(jFrame);
                 }
             }
             void JframeStringBuilder(JointFrame jFrame)
             {
-                AppendLibraryItem(eRoot.J_FRAME, jFrame.MyIndex, $"{jFrame.Joint.Connection.CustomName}:{jFrame.MySetting.MyValue()}");
+                AppendLibraryItem(eRoot.J_FRAME, jFrame.UniqueID, $"{jFrame.Joint.Connection.CustomName}:{jFrame.MySetting.MyValue()}");
             }
         }
     }

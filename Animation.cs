@@ -1,5 +1,7 @@
 ﻿//using Sandbox.ModAPI;
 
+using System.Collections.Generic;
+
 namespace IngameScript
 {
     partial class Program
@@ -13,7 +15,7 @@ namespace IngameScript
             }
             public Setting MySetting;
 
-            public Animation(float init, string name, int[] intData) : base(intData, name)
+            public Animation(float init, int uniqueID, string name = null) : base(uniqueID, name)
             {
                 GenerateSetting(init);
             }
@@ -32,19 +34,19 @@ namespace IngameScript
                 if (!base.Load(data))
                     return false;
 
-                try {
-                    GenerateSetting(float.Parse(data[(int)PARAM_custom.SettingInit]));
-                }
-                catch {
-                    GenerateSetting(0);
-                }
+                //try {
+                    GenerateSetting(float.Parse(data[(int)SaveDataAttribute.SettingInit]));
+                //}
+                //catch {
+                    //GenerateSetting(0);
+                //}
 
                 return true;
             }
             protected override void saveData(string[] buffer)
             {
                 base.saveData(buffer);
-                buffer[(int)PARAM_custom.SettingInit] = (MySetting == null ? 0 : MySetting.MyValue()).ToString();
+                buffer[(int)SaveDataAttribute.SettingInit] = (MySetting == null ? 0 : MySetting.MyValue()).ToString();
             }
         }
 

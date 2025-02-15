@@ -7,6 +7,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Text;
 using VRage;
 using VRage.Collections;
@@ -18,8 +19,7 @@ using VRage.Game.ModAPI.Ingame.Utilities;
 using VRage.Game.ObjectBuilders.Definitions;
 using VRageMath;
 
-namespace IngameScript
-{
+namespace IngameScript {
     /*
      
 :&:True:True:True:True:True:True:True:True:True:True
@@ -101,29 +101,23 @@ ALL_JOINTS:S:LOAD FINISHED
 
 
 
-    partial class Program : MyGridProgram
-    {
+    partial class Program : MyGridProgram {
         static Program PROG;
-        public Program()
-        {
+        public Program() {
             Echo("Ctor");
-            try
-            {
+            try {
                 PROG = this;
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 Echo($"{ex.Message}");
-                while (ex.InnerException != null)
-                {
+                while (ex.InnerException != null) {
                     ex = ex.InnerException;
                     Echo($"{ex.Message}");
                 }
                 return;
             }
 
-            try
-            {
+            try {
                 AssignFlightGroup();
                 SetupController();
                 SetupDroneControl();
@@ -136,8 +130,7 @@ ALL_JOINTS:S:LOAD FINISHED
                 Runtime.UpdateFrequency = FREQUENCY;
                 Initialized = true;
             }
-            catch
-            {
+            catch {
                 Initialized = false;
                 return;
             }
@@ -145,8 +138,21 @@ ALL_JOINTS:S:LOAD FINISHED
             SetGuiMode(GUIMode.MAIN);
             GUIUpdate();
         }
-        public void Main(string argument, UpdateType updateSource)
-        {
+
+        static int EnumLength(Type @enum) {
+            return Enum.GetValues(@enum).Cast<int>().Distinct().Count();
+        }
+
+        static int UniqueID<T>(List<T> list) where T : Root {
+            List<Root> tmp = new List<Root>();
+            tmp.AddRange(list);
+            tmp.Sort();
+            int newID = 0;
+            foreach (Root root in tmp) if (newID == root.UniqueID) newID++;
+            return newID;
+        }
+
+        public void Main(string argument, UpdateType updateSource) {
             Echo("Main Proc:");
             Echo($"Initialized: {Initialized}");
 
@@ -156,22 +162,19 @@ ALL_JOINTS:S:LOAD FINISHED
 
             TransferCount = 0;
 
-            if (BuildingJoints)
-            {
+            if (BuildingJoints) {
                 BuildingJoints = !LoadJoints();
                 JointsBuilt = !BuildingJoints;
                 return;
             }
 
-            if (LoadingData)
-            {
+            if (LoadingData) {
                 int loadResult = DataLoad();
                 LoadingData = loadResult == 0;
                 return;
             }
 
-            if (SavingData)
-            {
+            if (SavingData) {
                 int saveResult = DataSave();
                 SavingData = saveResult == 0;
                 Static($"Still Saving = {SavingData}\n\n");
@@ -179,8 +182,7 @@ ALL_JOINTS:S:LOAD FINISHED
             }
 
             RuntimeArguments(argument);
-            try
-            {
+            try {
                 DroneMessageHandler();
                 ControlInput();
                 FeetManager();
@@ -188,8 +190,7 @@ ALL_JOINTS:S:LOAD FINISHED
                 AnimationManager();
                 DisplayManager();
             }
-            catch
-            {
+            catch {
                 DebugBinStream.Append("FAIL-POINT!");
                 Write(Screen.DEBUG_STREAM, DebugBinStream);
                 Runtime.UpdateFrequency = UpdateFrequency.None;
@@ -197,8 +198,7 @@ ALL_JOINTS:S:LOAD FINISHED
 
             DebugBinStream.Clear(); // MUST HAPPEN!
         }
-        public void Save()
-        {
+        public void Save() {
             if (IgnoreSave.MyState())
                 return;
 
@@ -206,8 +206,7 @@ ALL_JOINTS:S:LOAD FINISHED
         }
 
         #region USER CONSTS
-        enum Screen
-        {
+        enum Screen {
             INPUT = 0,
             SPLASH = 1,
             CONTROLS = 2,
@@ -237,7 +236,7 @@ ALL_JOINTS:S:LOAD FINISHED
         ////////////////////
 
         static UpdateFrequency DEF_FREQ = UpdateFrequency.Update1;
-        static RootSort SORT = new RootSort();
+        //static RootSort SORT = new RootSort();
 
 
         const string VersionNumber = "0.6.1";
@@ -385,7 +384,7 @@ ALL_JOINTS:S:LOAD FINISHED
         static bool JointsBuilt = false;
 
         string LoadSetDataBuffer;
-        static int LoadJointIndex;
+        static int BlockBufferIndex;
         static int LoadCustomDataIndex;
         static int TransferCount = 0;
         static int[] SaveObjectIndex = new int[Enum.GetNames(typeof(eRoot)).Length];
@@ -396,7 +395,7 @@ ALL_JOINTS:S:LOAD FINISHED
         static List<Foot> FeetBuffer = new List<Foot>();
         static List<JointFrame> jFrameBuffer = new List<JointFrame>();
         static List<KeyFrame> kFrameBuffer = new List<KeyFrame>();
-        static List<Root> sequenceBuffer = new List<Root>();
+        static List<Sequence> sequenceBuffer = new List<Sequence>();
 
         #endregion
 
@@ -510,8 +509,7 @@ ALL_JOINTS:S:LOAD FINISHED
         #endregion
 
         #region GUI BUILDERS
-        string MatrixToStringA(MatrixD matrix, string digits = "")
-        {
+        string MatrixToStringA(MatrixD matrix, string digits = "") {
             return
                 $"R: {matrix.M11.ToString(digits)} : {matrix.M12.ToString(digits)} : {matrix.M13.ToString(digits)}\n" +
                 $"U: {matrix.M21.ToString(digits)} : {matrix.M22.ToString(digits)} : {matrix.M23.ToString(digits)}\n" +
@@ -519,31 +517,25 @@ ALL_JOINTS:S:LOAD FINISHED
                 $"T: {matrix.M41.ToString(digits)} : {matrix.M42.ToString(digits)} : {matrix.M43.ToString(digits)}\n" +
                 $"S: {matrix.M14.ToString(digits)} : {matrix.M24.ToString(digits)} : {matrix.M34.ToString(digits)}\n";
         }
-        static string MatrixToStringB(MatrixD matrix, string digits = "#.##")
-        {
+        static string MatrixToStringB(MatrixD matrix, string digits = "#.##") {
             return
                 $"R:{matrix.Right.X.ToString(digits)}|{matrix.Right.Y.ToString(digits)}|{matrix.Right.Z.ToString(digits)}\n" +
                 $"U:{matrix.Up.X.ToString(digits)}|{matrix.Up.Y.ToString(digits)}|{matrix.Up.Z.ToString(digits)}\n" +
                 $"F:{matrix.Forward.X.ToString(digits)}|{matrix.Forward.Y.ToString(digits)}|{matrix.Forward.Z.ToString(digits)}\n" +
                 $"T:{matrix.Translation.X.ToString(digits)}|{matrix.Translation.Y.ToString(digits)}|{matrix.Translation.Z.ToString(digits)}\n";
         }
-        static string BuildCursor(bool selected)
-        {
+        static string BuildCursor(bool selected) {
             return $"{Cursor[selected ? 1 : 0]}";
         }
-        static void LineWrapper(List<string> buffer, string[] words, int charMax)
-        {
+        static void LineWrapper(List<string> buffer, string[] words, int charMax) {
             string newLine = string.Empty;
-            for (int i = 0; i < words.Length; i++)
-            {
-                if (words[i].Length > charMax)
-                {
+            for (int i = 0; i < words.Length; i++) {
+                if (words[i].Length > charMax) {
                     buffer.Add($"{words[i]}\n");
                     newLine = string.Empty;
                     continue;
                 }
-                if (words[i].Length + newLine.Length > charMax)
-                {
+                if (words[i].Length + newLine.Length > charMax) {
                     buffer.Add(newLine);
                     newLine = "";
                 }
@@ -555,20 +547,17 @@ ALL_JOINTS:S:LOAD FINISHED
         #endregion
 
         #region GUI INPUT
-        static void SetGuiMode(GUIMode mode)
-        {
+        static void SetGuiMode(GUIMode mode) {
             CurrentGUIMode = mode;
             Pages[CurrentGUIMode].SetMode(mode);
-            if (CockPit != null)
-            {
+            if (CockPit != null) {
                 CockPit.ControlThrusters = mode == GUIMode.PILOT;
                 foreach (IMyTerminalBlock flightBlock in FlightGroup)
                     if (flightBlock is IMyGyro)
                         (flightBlock as IMyGyro).GyroOverride = mode != GUIMode.PILOT;
             }
         }
-        void ButtonPress(GUIKey keyPress)
-        {
+        void ButtonPress(GUIKey keyPress) {
             GetCurrentPage().TriggerButton(keyPress);
 
             if (AutoSave.MyState())
@@ -576,17 +565,14 @@ ALL_JOINTS:S:LOAD FINISHED
 
             GUIUpdate();
         }
-        void GUIUpdate()
-        {
+        void GUIUpdate() {
             Static("GUI Update\n");
 
             GetCurrentPage().UpdatePage();
         }
 
-        static bool UserInputString(ref string buffer)
-        {
-            try
-            {
+        static bool UserInputString(ref string buffer) {
+            try {
                 InputReader.Clear();
                 GetSurface(Screen.INPUT).ReadText(InputReader);
                 buffer = InputReader.ToString();
@@ -595,22 +581,18 @@ ALL_JOINTS:S:LOAD FINISHED
 
                 return true;
             }
-            catch
-            {
+            catch {
                 return false;
             }
         }
-        static bool UserInputFloat(out float buffer)
-        {
-            try
-            {
+        static bool UserInputFloat(out float buffer) {
+            try {
                 InputReader.Clear();
                 GetSurface(Screen.INPUT).ReadText(InputReader);
                 buffer = float.Parse(InputReader.ToString());
                 return true;
             }
-            catch
-            {
+            catch {
                 buffer = 0;
                 return false;
             }
@@ -618,16 +600,13 @@ ALL_JOINTS:S:LOAD FINISHED
         #endregion
 
         #region GUI OUTPUTS
-        static bool CheckStaticLimit(string append)
-        {
+        static bool CheckStaticLimit(string append) {
             return DebugBinStatic.Length + append.Length > StaticDebugCharCap;
         }
-        static bool Write(Screen screen, StringBuilder input, bool append = true)
-        {
+        static bool Write(Screen screen, StringBuilder input, bool append = true) {
             return Write(screen, input.ToString(), append);
         }
-        static bool Write(Screen screen, string input, bool append = true)
-        {
+        static bool Write(Screen screen, string input, bool append = true) {
             IMyTextSurface surface = GetSurface(screen);
 
             if (surface != null)
@@ -635,35 +614,30 @@ ALL_JOINTS:S:LOAD FINISHED
 
             return surface != null;
         }
-        static bool Static(string input, bool append = true)
-        {
+        static bool Static(string input, bool append = true) {
             if (!append || CheckStaticLimit(input))
                 DebugBinStatic.Clear();
             DebugBinStatic.Append(input);
             return Write(Screen.DEBUG_STATIC, DebugBinStatic, false);
         }
-        bool ClearStatic()
-        {
+        bool ClearStatic() {
             return Static("", false);
         }
 
-        bool MenuSystem(Screen gui, Screen buttons)
-        {
+        bool MenuSystem(Screen gui, Screen buttons) {
             return Write(gui, SplashBuilder, false) && Write(buttons, ButtonBuilder, false);
         }
-        bool Diagnostics(Screen panel)
-        {
+        bool Diagnostics(Screen panel) {
             DisplayManagerBuilder.Clear();
-            try
-            {
+            try {
                 DisplayManagerBuilder.Append(
                     $"Control: {CockPit != null}\n" +
                     $"Designated: {DesignatedPlane != null}\n" +
                     $"PlaneBlock: {CurrentWalkSet.Plane != null}\n");
                 Vector3 B = CurrentWalkSet.PlaneBuffer;
                 Vector3 T = CurrentWalkSet.TurnBuffer;
-                Foot F = CurrentWalkSet.GetFoot(CurrentWalkSet.LockedIndex);
-                Foot U = CurrentWalkSet.GetFoot(0);
+                Foot F = CurrentWalkSet.GetChildByIndex<Foot>(CurrentWalkSet.LockedFootIndex);
+                Foot U = CurrentWalkSet.GetChildByIndex<Foot>(0);
 
                 DisplayManagerBuilder.Append($"RawInput:\n{CockPit.RotationIndicator.Y}:{CockPit.RotationIndicator.X}:{CockPit.RollIndicator}\n");
 
@@ -674,39 +648,34 @@ ALL_JOINTS:S:LOAD FINISHED
                 else
                     DisplayManagerBuilder.Append("No locked foot!\n");
 
-                DisplayManagerBuilder.Append($"LockedIndex: {CurrentWalkSet.LockedIndex}\n");
+                DisplayManagerBuilder.Append($"LockedIndex: {CurrentWalkSet.LockedFootIndex}\n");
                 DisplayManagerBuilder.Append($"0 indexFinals:\n");
                 for (int i = 0; i < U.Planars.Count; i++)
                     DisplayManagerBuilder.Append($"Planar {i} (Anim/Active): {U.GetPlanar(i).AnimTarget}/{U.GetPlanar(i).ActiveTarget}\n");
 
-                for (int i = 0; i < CurrentWalkSet.Feet.Count; i++)
-                {
-                    Foot foot = CurrentWalkSet.GetFoot(i);
+                for (int i = 0; i < CurrentWalkSet.Feet.Count; i++) {
+                    Foot foot = CurrentWalkSet.GetChildByIndex<Foot>(i);
                     DisplayManagerBuilder.Append($"Foot {i} Locked: {foot.Locked}\n");
-                    for (int j = 0; j < foot.Planars.Count; j++)
-                    {
+                    for (int j = 0; j < foot.Planars.Count; j++) {
                         Joint joint = foot.GetPlanar(j);
                         DisplayManagerBuilder.Append($"Planar {joint.Name} rotation axis: {joint.ReturnRotationAxis()}\n");
                     }
                 }
             }
-            catch
-            { DisplayManagerBuilder.Append("FAIL POINT!"); }
+            catch { DisplayManagerBuilder.Append("FAIL POINT!"); }
 
             return Write(panel, DisplayManagerBuilder, false);
         }
-        bool MechStatus(Screen panel)
-        {
+        bool MechStatus(Screen panel) {
             DisplayManagerBuilder.Clear();
 
-            try
-            {
+            try {
                 DisplayManagerBuilder.Append(
                      "Mech Status:\n" +
                     $"-Planeing: {Orientation.MyState()}\n\n" +
 
                     $"CurrentWalkSet: {CurrentWalkSet.Name}\n" +
-                    $"-LockedFootIndex: {CurrentWalkSet.LockedIndex}\n\n" +
+                    $"-LockedFootIndex: {CurrentWalkSet.LockedFootIndex}\n\n" +
 
                     $"CurrentWalk: {CurrentWalk.Name}\n" +
                     $"-ClockState: {CurrentWalk.CurrentClockMode}\n" +
@@ -716,17 +685,14 @@ ALL_JOINTS:S:LOAD FINISHED
                     $"-LoadedFrames: {CurrentWalk.CurrentFrames[0].Name} || {CurrentWalk.CurrentFrames[1].Name}\n");
             }
 
-            catch
-            { DisplayManagerBuilder.Append("FAIL POINT!"); }
+            catch { DisplayManagerBuilder.Append("FAIL POINT!"); }
 
             return Write(panel, DisplayManagerBuilder, false);
         }
-        bool DebugStream(Screen panel)
-        {
+        bool DebugStream(Screen panel) {
             DisplayManagerBuilder.Clear();
 
-            try
-            {
+            try {
                 DisplayManagerBuilder.Append(
                     ">>>>>>>>>>>>>>>>>>>\n" +
                     ">>> DebugStream >>>\n" +
@@ -735,8 +701,7 @@ ALL_JOINTS:S:LOAD FINISHED
                 DisplayManagerBuilder.Append($"{DebugBinStream}");
             }
 
-            catch
-            { DisplayManagerBuilder.Append("FAIL POINT!"); }
+            catch { DisplayManagerBuilder.Append("FAIL POINT!"); }
             bool result = Write(panel, DisplayManagerBuilder, false);
             DebugBinStream.Clear();
             return result;
@@ -746,19 +711,15 @@ ALL_JOINTS:S:LOAD FINISHED
         #endregion
 
         #region UPATES
-        void ControlInput()
-        {
-            if (CockPit == null)
-            {
+        void ControlInput() {
+            if (CockPit == null) {
                 Echo("No Control!");
                 InputRotationBuffer = Vector3.Zero;
                 return;
             }
 
-            if (GetCurrentGuiMode() == GUIMode.PILOT)
-            {
-                if (!DroneOverride.MyState() && DroneControlled && !WAIT)
-                {
+            if (GetCurrentGuiMode() == GUIMode.PILOT) {
+                if (!DroneOverride.MyState() && DroneControlled && !WAIT) {
                     DebugBinStream.Append("Buffering drone input...\n");
 
                     InputRotationBuffer.X = -MECH_IX_BUFFER[(int)MechIx.PITCH];
@@ -769,8 +730,7 @@ ALL_JOINTS:S:LOAD FINISHED
 
                     DebugBinStream.Append("Buffering Complete!\n");
                 }
-                else
-                {
+                else {
                     InputRotationBuffer.Y = LookScalar * -CockPit.RotationIndicator.Y;
                     InputRotationBuffer.X = LookScalar * -CockPit.RotationIndicator.X;
 
@@ -784,16 +744,14 @@ ALL_JOINTS:S:LOAD FINISHED
 
                 DebugBinStream.Append($"TurnBuffer(f): {InputTurnBuffer}\n");
 
-                if (LastMechWalkInput != MoveBuffer)
-                {
+                if (LastMechWalkInput != MoveBuffer) {
                     LastMechWalkInput = MoveBuffer;
                     CurrentWalk.SetClockMode((ClockMode)MoveBuffer);
                 }
 
                 DebugBinStream.Append("Walk input digested\n");
             }
-            else
-            {
+            else {
                 DebugBinStream.Append("Menu Navigation...\n");
 
                 int[] menuMove = {
@@ -803,8 +761,7 @@ ALL_JOINTS:S:LOAD FINISHED
                     (int)CockPit.RollIndicator
                 };
 
-                for (int i = 0; i < LastMenuInput.Length; i++)
-                {
+                for (int i = 0; i < LastMenuInput.Length; i++) {
                     DebugBinStream.Append($" Axis {i}: {menuMove[i]}\n");
 
                     if (LastMenuInput[i] == menuMove[i])
@@ -812,8 +769,7 @@ ALL_JOINTS:S:LOAD FINISHED
 
                     LastMenuInput[i] = menuMove[i];
 
-                    if (menuMove[i] != 0)
-                    {
+                    if (menuMove[i] != 0) {
                         GUIKey nav = (GUIKey)((int)GUIKey.RIGHT + (i * 2) + (menuMove[i] < 0 ? 1 : 0));
                         Static($"move: {nav}\n");
                         ButtonPress(nav);
@@ -822,10 +778,8 @@ ALL_JOINTS:S:LOAD FINISHED
             }
         }
 
-        void DroneCommand(MechAction action)
-        {
-            switch (action)
-            {
+        void DroneCommand(MechAction action) {
+            switch (action) {
                 case MechAction.WAIT:
                     WAIT = true;
                     break;
@@ -835,14 +789,12 @@ ALL_JOINTS:S:LOAD FINISHED
                     break;
             }
         }
-        void RuntimeArguments(string argument)
-        {
+        void RuntimeArguments(string argument) {
             if (argument == null ||
                 argument == "")
                 return;
 
-            switch (argument)
-            {
+            switch (argument) {
                 case "CLEAR":
                     ClearStatic();
                     break;
@@ -861,8 +813,7 @@ ALL_JOINTS:S:LOAD FINISHED
             }
         }
 
-        void WalkManager()
-        {
+        void WalkManager() {
             if (!StatorControl.MyState() ||
                 CurrentWalkSet == null ||
                 CurrentWalk == null)
@@ -872,8 +823,7 @@ ALL_JOINTS:S:LOAD FINISHED
             CurrentWalkSet.UpdatePlanars();
             CurrentWalk.UpdateSequence(false);
         }
-        void AnimationManager()
-        {
+        void AnimationManager() {
             if (!StatorControl.MyState() ||
                 Animations == null ||
                 Animations.Count == 0)
@@ -882,14 +832,12 @@ ALL_JOINTS:S:LOAD FINISHED
             foreach (Sequence seq in Animations)
                 seq.UpdateSequence(true);
         }
-        void FeetManager()
-        {
+        void FeetManager() {
             if (IgnoreFeet.MyState() ||
                 CurrentWalkSet == null)
                 return;
 
-            if (CurrentWalkSet.UpdateFootLockStatus())
-            {
+            if (CurrentWalkSet.UpdateFootLockStatus()) {
                 ToggleFlight(!CurrentWalkSet.Locked);
                 CurrentWalkSet.TogglePlaneing(Orientation.MyState());
                 GUIUpdate();
@@ -899,32 +847,26 @@ ALL_JOINTS:S:LOAD FINISHED
                 foreach (Joint toe in foot.Toes)
                     toe.UpdateJoint(StatorTarget.MyState());
         }
-        void DisplayManager()
-        {
+        void DisplayManager() {
             Echo($"CockpitScreens: {MenuSystem(Screen.SPLASH, Screen.CONTROLS)}");
             Echo($"Diagnostics: {Diagnostics(Screen.DIAGNOSTICS)}");
             Echo($"MechStatus: {MechStatus(Screen.MECH_STATUS)}");
             Echo($"DebugStream: {DebugStream(Screen.DEBUG_STREAM)}");
         }
-        void DroneMessageHandler()
-        {
+        void DroneMessageHandler() {
             DroneTimeOutClock--;
             DroneTimeOutClock = DroneTimeOutClock < 0 ? 0 : DroneTimeOutClock;
 
-            if (DroneEar.HasPendingMessage)
-            {
+            if (DroneEar.HasPendingMessage) {
 
-                while (DroneEar.HasPendingMessage)
-                {
+                while (DroneEar.HasPendingMessage) {
                     MyIGCMessage message = DroneEar.AcceptMessage(); //Always digest to clear stack.
 
-                    try
-                    {
+                    try {
                         ImmutableArray<double> rawData = (ImmutableArray<double>)message.Data;
 
 
-                        for (int i = 0; i < MECH_IX_BUFFER.Length; i++)
-                        {
+                        for (int i = 0; i < MECH_IX_BUFFER.Length; i++) {
                             MECH_IX_BUFFER[i] = rawData[i] == double.NaN ? 0 : rawData[i];
                         }
 
@@ -934,15 +876,13 @@ ALL_JOINTS:S:LOAD FINISHED
                         DroneTimeOutClock = DroneTimeOut;
 
                     }
-                    catch
-                    {
+                    catch {
                         DebugBinStream.Append("FAIL-POINT!\n");
                     }
                 }
             }
 
-            else
-            {
+            else {
                 for (int i = 0; i < MECH_IX_BUFFER.Length; i++)
                     MECH_IX_BUFFER[i] = 0;
 
@@ -954,31 +894,25 @@ ALL_JOINTS:S:LOAD FINISHED
 
         #region GLOBAL EVENTS
 
-        static void LoadWalk(Sequence walk)
-        {
+        static void LoadWalk(Sequence walk) {
             CurrentWalk = walk;
 
-            if (CurrentWalk != null)
-            {
+            if (CurrentWalk != null) {
                 CurrentWalk.OverrideSet();
                 CurrentWalk.ZeroSequence();
             }
         }
-        void ToggleOrientation(bool enable)
-        {
+        void ToggleOrientation(bool enable) {
             CurrentWalkSet.TogglePlaneing(enable);
         }
-        void ToggleFlight(bool enable)
-        {
+        void ToggleFlight(bool enable) {
             foreach (IMyFunctionalBlock flightBlock in FlightGroup)
                 flightBlock.Enabled = enable;
         }
-        static void WriteCustomData()
-        {
+        static void WriteCustomData() {
             PROG.Me.CustomData = SaveData.ToString();
         }
-        bool CheckCallLimit()
-        {
+        bool CheckCallLimit() {
             TransferCount++;
             bool capped = TransferCount >= DataTransferCap;
             if (capped)
@@ -988,31 +922,26 @@ ALL_JOINTS:S:LOAD FINISHED
         #endregion
 
         #region INITIALIZERS
-        void SetupScreens()
-        {
+        void SetupScreens() {
             IMyBlockGroup panelGroup = GridTerminalSystem.GetBlockGroupWithName(LCDgroupName);
             List<IMyTextSurface> buffer = new List<IMyTextSurface>();
             if (panelGroup != null)
                 panelGroup.GetBlocksOfType(buffer);
             Screens.AddRange(buffer);
 
-            for (int i = 0; i < Screens.Count; i++)
-            {
-                if (i < Screens.Count)
-                {
+            for (int i = 0; i < Screens.Count; i++) {
+                if (i < Screens.Count) {
                     Screens[i].ContentType = ContentType.TEXT_AND_IMAGE;
                     Screens[i].WriteText($"Index:{i}");
                 }
             }
         }
-        void SetupOptions()
-        {
+        void SetupOptions() {
             Options = new List<Option>();
             SetupSettings();
             SetupToggles();
         }
-        void SetupSettings()
-        {
+        void SetupSettings() {
             StepThreshold = new Setting("Step Threshold", "How long into a keyframe (%) the mech must walk for before a foot can re-attach again.",
                 0.6f, 0.05f);
 
@@ -1051,8 +980,7 @@ ALL_JOINTS:S:LOAD FINISHED
 
             Options.AddRange(Settings);
         }
-        void SetupToggles()
-        {
+        void SetupToggles() {
             DroneOverride = new Toggle("Drone Override", "Prevents drone controller from controlling the mech. Messages will still be recieved. Note the drone controller only works in pilot mode.", false);
 
             IgnoreSave = new Toggle("Ignore Save", "Prevents the CustomData of the PB from being over-written auto-matically (eg. recompile/game save)", true);
@@ -1082,16 +1010,14 @@ ALL_JOINTS:S:LOAD FINISHED
 
             Options.AddRange(Toggles);
         }
-        void AssignFlightGroup()
-        {
+        void AssignFlightGroup() {
             IMyBlockGroup group = GridTerminalSystem.GetBlockGroupWithName(FlightGroupName);
             if (group == null)
                 return;
 
             group.GetBlocksOfType(FlightGroup);
         }
-        void SetupController()
-        {
+        void SetupController() {
             List<IMyCockpit> cockpits = new List<IMyCockpit>();
             GridTerminalSystem.GetBlocksOfType(cockpits);
             if (cockpits.Count < 1)
@@ -1101,8 +1027,7 @@ ALL_JOINTS:S:LOAD FINISHED
             for (int i = 0; i < CockPit.SurfaceCount; i++)
                 Screens.Add(CockPit.GetSurface(i));
         }
-        void SetupDroneControl()
-        {
+        void SetupDroneControl() {
             DroneEar = IGC.RegisterBroadcastListener(DroneChannel);
         }
 
@@ -1119,16 +1044,14 @@ ALL_JOINTS:S:LOAD FINISHED
 
 
         #region CONSTRUCTIONS
-        static JointSet NewJointSet(string groupName, int index)
-        {
+        static JointSet NewJointSet(string groupName, int uniqueID) {
             Static("Making new set...\n");
             List<IMyBlockGroup> groups = new List<IMyBlockGroup>();
             List<IMyBlockGroup> feet = new List<IMyBlockGroup>();
             IMyBlockGroup fullSet = null;
             GetGridBlockGroups(groups);
 
-            foreach (IMyBlockGroup group in groups)
-            {
+            foreach (IMyBlockGroup group in groups) {
                 if (group.Name == groupName)
                     fullSet = group;
 
@@ -1139,118 +1062,81 @@ ALL_JOINTS:S:LOAD FINISHED
             if (fullSet == null)
                 return null;
 
-            //RootData setRoot = new RootData(groupName, index, -1);
-            int[] intData = new int[Enum.GetValues(typeof(PARAM_int)).Length];
-            intData[(int)PARAM_int.uIX] = index;
-            intData[(int)PARAM_int.pIX] = -1; // JointSets unparented
 
-            JointSet newSet = new JointSet(CockPit, fullSet, intData);
+            JointSet newSet = new JointSet(CockPit, fullSet, uniqueID);
             List<IMyTerminalBlock> joints = newSet.Blocks;// GetBlocksFromGroup(fullSet);
-            int jointIndex = 0;
+            int funcID = 0;
             List<IMyTerminalBlock> footBuffer;
-            //RootData jRoot;
-            //JointData jData = new JointData();
-
-            intData[(int)PARAM_int.pIX] = index; // prepare for use with joints and feet
 
             // Finish all foot associated joints first, leaving the remaining to be resolved and added directly to the joint set
 
-            for (int f = 0; f < feet.Count; f++)
-            {
+            for (int f = 0; f < feet.Count; f++) {
                 footBuffer = GetBlocksFromGroup(feet[f]);
                 if (footBuffer.Count < 1)
                     continue;
 
-                intData[(int)PARAM_int.uIX] = f;
-                intData[(int)PARAM_int.lIX] = -1; // lock index un-benowst at this point. Modify in editor
 
-
-                Foot newFoot = new Foot(feet[f], intData);
+                Foot newFoot = new Foot(feet[f], f);
                 newSet.Feet.Add(newFoot);
-                //jData.FootIndex = f;
+
                 //int toeIndex = 0;
 
-                for (int b = 0; b < footBuffer.Count; b++)
-                {
+                for (int b = 0; b < footBuffer.Count; b++) {
                     joints.Remove(footBuffer[b]); // Remove redundancies
 
-                    //bool toe = footBuffer[b].CustomName.Contains(ToeSignature);
-                    //bool turn = footBuffer[b].CustomName.Contains(TurnSignature);
+                    bool toe = footBuffer[b].CustomName.Contains(ToeSignature);
+                    bool turn = footBuffer[b].CustomName.Contains(TurnSignature);
 
-                    intData[(int)PARAM_int.fIX] = f;
 
-                    if (footBuffer[b] is IMyMechanicalConnectionBlock)
-                    {
-                        //intData[(int)PARAM_int.uIX] = toe ? toeIndex : jointIndex;
+                    if (footBuffer[b] is IMyMechanicalConnectionBlock) {
 
                         // name = $"[{(toe ? "GRIPPER" : turn ? "TURN" : "PLANE")}]"; // <-- Concatinate?
                         //string TAG = toe ? GripTag : turn ? TurnTag : PlaneTag;
 
 
-                        intData[(int)PARAM_int.GripDirection] = toe ? Math.Sign(footBuffer[b].GetValueFloat("Velocity")) : 0;
-
-                        Joint newJoint = NewJoint( (IMyMechanicalConnectionBlock)footBuffer[b], intData);
+                        Joint newJoint = NewJoint((IMyMechanicalConnectionBlock)footBuffer[b], funcID, f);
                         AppendJoint(newSet, newJoint);
 
                         //if (toe)
                         //    toeIndex++;
                         //else
-                            jointIndex++;
+                        //    jointIndex++;
                     }
-                    if (footBuffer[b] is IMyLandingGear)
-                    {
-                        intData[(int)PARAM_int.uIX] = newFoot.Magnets.Count;
-
-                        Magnet newMagnet = NewMagnet((IMyLandingGear)footBuffer[b], intData);
+                    else if (footBuffer[b] is IMyLandingGear) {
+                        Magnet newMagnet = new Magnet((IMyLandingGear)footBuffer[b], funcID, f);
                         AppendMagnet(newSet, newMagnet);
                     }
+                    else continue;
+                    funcID++;
                 }
             }
 
-            intData[(int)PARAM_int.fIX] = -1;
-            intData[(int)PARAM_int.GripDirection] = 0;
 
-            for (int j = 0; j < joints.Count; j++)
-            {
-                if (joints[j] is IMyMechanicalConnectionBlock)
-                {
-                    jointIndex++;
-                    newSet.Joints.Add(NewJoint((IMyMechanicalConnectionBlock)joints[j], intData));
+            for (int j = 0; j < joints.Count; j++) {
+                if (joints[j] is IMyMechanicalConnectionBlock) {
+                    newSet.Joints.Add(NewJoint((IMyMechanicalConnectionBlock)joints[j], funcID));
+                    funcID++;
                 }
             }
             return newSet;
         }
 
-        static string ParseBlockTag(IMyTerminalBlock block, bool belongsToFoot) {
-            if (block is IMyLandingGear)
-                return MagnetTag;
-            if (!(block is IMyMechanicalConnectionBlock))
-                return string.Empty;
-            if (!belongsToFoot)
-                return JointTag;
-            if (block.CustomName.Contains(ToeSignature))
-                return GripTag;
-            if (block.CustomName.Contains(TurnSignature))
-                return TurnTag;
-            return PlaneTag;
-        }
 
-        static Joint NewJoint(IMyMechanicalConnectionBlock jointBlock, int[] intData)
-        {
+
+        static Joint NewJoint(IMyMechanicalConnectionBlock jointBlock, int uniqueID, int footID = -1) {
             Joint newJoint = null;
             //string[] stringData = new string[Enum.GetNames(typeof(PARAM_string)).Length];
             //stringData[(int)PARAM_string.TAG] = JointTag;
             //stringData[(int)PARAM_string.Name] = jointBlock.CustomName;
 
             if (jointBlock is IMyPistonBase)
-                newJoint = new Piston((IMyPistonBase)jointBlock, intData);
+                newJoint = new Piston((IMyPistonBase)jointBlock, uniqueID, footID);
 
-            if (jointBlock is IMyMotorStator)
-            {
+            if (jointBlock is IMyMotorStator) {
                 if (jointBlock.BlockDefinition.ToString().Contains("Hinge"))
-                    newJoint = new Hinge((IMyMotorStator)jointBlock, intData);
+                    newJoint = new Hinge((IMyMotorStator)jointBlock, uniqueID, footID);
                 else
-                    newJoint = new Rotor((IMyMotorStator)jointBlock, intData);
+                    newJoint = new Rotor((IMyMotorStator)jointBlock, uniqueID, footID);
             }
 
             if (newJoint != null)
@@ -1258,45 +1144,30 @@ ALL_JOINTS:S:LOAD FINISHED
 
             return newJoint;
         }
-        static KeyFrame NewKeyFrame(int[] intData, JointSet set, string name = null)
-        {
+        static KeyFrame NewKeyFrame(JointSet set, string name = null) {
+            KeyFrame newKFrame = new KeyFrame(FrameLengthDef, name);
 
-            int[] jFrameIntData = new int[Enum.GetNames(typeof(PARAM_int)).Length];
-            jFrameIntData[(int)PARAM_int.pIX] = intData[(int)PARAM_int.uIX];
-
-            List<JointFrame> Jframes = new List<JointFrame>();
-
-            for (int i = 0; i < set.Joints.Count; i++) {
-                if (set.Joints[i] is Piston)
+            foreach (Joint joint in set.Joints) {
+                if (joint is Piston)
                     continue;
 
-                jFrameIntData[(int)PARAM_int.uIX] = i;
-
-                Jframes.Add(new JointFrame(set.GetJoint(i), jFrameIntData, Snapping));
+                newKFrame.AddChild(new JointFrame(joint, Snapping));
             }
-
-            KeyFrame newKFrame = new KeyFrame(FrameLengthDef, intData, Jframes, name);
 
             return newKFrame;
         }
-        static Magnet NewMagnet(IMyLandingGear gear, int[] intData)
-        {
-            Magnet newMagnet = new Magnet(gear, intData);
-            MagnetBin.Add(newMagnet);
-            return newMagnet;
-        }
-        static void AppendMagnet(JointSet set, Magnet magnet)
-        {
+
+        static void AppendMagnet(JointSet set, Magnet magnet) {
             if (magnet == null ||
                 set == null)
                 return;
 
-            Foot foot = set.GetFoot(magnet.FootIndex);
+            Foot foot = set.GetChildByID<Foot>(magnet.FootID);
             if (foot != null)
                 foot.Magnets.Add(magnet);
         }
-        static void AppendJoint(JointSet set, Joint joint)
-        {
+
+        static void AppendJoint(JointSet set, Joint joint) {
             if (joint == null ||
                 set == null)
                 return;
@@ -1304,10 +1175,9 @@ ALL_JOINTS:S:LOAD FINISHED
             if (joint.TAG != GripTag)
                 set.Joints.Add(joint);
 
-            Foot foot = set.GetFoot(joint.FootIndex);
+            Foot foot = set.GetChildByID<Foot>(joint.FootID);
 
-            if (foot != null)
-            {
+            if (foot != null) {
                 if (joint.TAG == GripTag)
                     foot.Toes.Add(joint);
 
@@ -1318,176 +1188,166 @@ ALL_JOINTS:S:LOAD FINISHED
         #endregion
 
         #region LOAD
-        int DataLoad()
-        {
+        int DataLoad() {
             JsetBin.Clear();
 
             string[] load = Me.CustomData.Split('\n');
 
             Static($"Load Lines Length: {load.Length}\n");
 
-            for (int i = LoadCustomDataIndex; i < load.Length; i++)
-            {
+            for (int i = LoadCustomDataIndex; i < load.Length; i++) {
                 LoadCustomDataIndex = i;
                 if (CheckCallLimit())
                     return 0;
 
-                try
-                {
-                    Static("next load line...\n");
-                    string lineTag = load[i].Split(':')[(int)PARAM_custom.TAG];
-                    Static($"TAG: {lineTag}\n");
+                //try
+                //{
+                Static("next load line...\n");
+                string lineTag = load[i].Split(':')[(int)SaveDataAttribute.TAG];
+                Static($"TAG: {lineTag}\n");
 
-                    switch (lineTag)
-                    {
-                        // OPTIONS //
-                        case OptionsTag:
-                            Static("options:");
-                            LoadToggles(load[i]);
-                            Static(" loaded!\n");
+                switch (lineTag) {
+                    // OPTIONS //
+                    case OptionsTag:
+                        Static("options:");
+                        LoadToggles(load[i]);
+                        Static(" loaded!\n");
+                        break;
+
+                    case SettingsTag:
+                        Static("Settings:");
+                        LoadSettings(load[i]);
+                        Static(" loaded!\n");
+                        break;
+
+                    // BLOCKS //
+                    case FootTag:
+                        Static("constructing foot...\n");
+                        Foot newFoot = new Foot(load[i]);//new Foot(this);
+                                                         //newFoot.Load();
+                        if (newFoot.BUILT) {
+                            FeetBuffer.Add(newFoot);
+                            Static("foot constructed!\n");
+                        }
+                        else
+                            Static("foot construction failed!\n");
+                        break;
+
+                    case JointSetTag:
+
+                        if (JointsBuilt) {
+                            Static("completing set...\n");
+                            SetBuffer.Sequences.AddRange(sequenceBuffer);
+                            FeetBuffer.Clear();
+                            sequenceBuffer.Clear();
+                            JointsBuilt = false;
+                            JsetBin.Add(SetBuffer);
+                            SetBuffer = null;
                             break;
+                        }
 
-                        case SettingsTag:
-                            Static("Settings:");
-                            LoadSettings(load[i]);
-                            Static(" loaded!\n");
-                            break;
+                        Static("constructing set...\n");
+                        BuildingJoints = true;
+                        BlockBufferIndex = 0;
+                        LoadSetDataBuffer = load[i];
+                        LoadCustomDataIndex++;
+                        return 0;
 
-                        // BLOCKS //
-                        case FootTag:
-                            Static("constructing foot...\n");
-                            Foot newFoot = LoadFoot(load[i]);//new Foot(this);
-                            //newFoot.Load();
-                            if (newFoot.BUILT)
-                            {
-                                FeetBuffer.Add(newFoot);
-                                Static("foot constructed!\n");
-                            }
-                            else
-                                Static("foot construction failed!\n");
-                            break;
+                    // SEQUENCES //
+                    case JframeTag:
+                        Static("jFrame:");
+                        JointFrame newJframe = new JointFrame(load[i], SetBuffer);
+                        if (newJframe.BUILT) {
+                            jFrameBuffer.Add(newJframe);
+                            Static(" added!:\n");
+                        }
+                        else
+                            Static(" failed!:\n");
+                        break;
 
-                        case JointSetTag:
+                    case KframeTag:
+                        Static("kFrame:");
+                        KeyFrame newKframe = new KeyFrame(load[i]);
+                        if (newKframe.BUILT) {
+                            kFrameBuffer.Add(newKframe);
+                            newKframe.AddChildren(jFrameBuffer);
+                            jFrameBuffer.Clear();
+                            Static(" added!:\n");
+                        }
+                        else
+                            Static(" failed!:\n");
+                        break;
 
-                            if (JointsBuilt)
-                            {
-                                Static("completing set...\n");
-                                SetBuffer.Sequences.AddRange(sequenceBuffer);
-                                FeetBuffer.Clear();
-                                sequenceBuffer.Clear();
-                                JointsBuilt = false;
-                                JsetBin.Add(SetBuffer);
-                                SetBuffer = null;
-                                break;
-                            }
+                    case ZframeTag:
+                        Static("Zero Frame:");
+                        KeyFrame zeroFrame = new KeyFrame(load[i]);
+                        if (zeroFrame.BUILT) {
+                            SetBuffer.AddChild(zeroFrame);
+                            zeroFrame.AddChildren(jFrameBuffer);
+                            jFrameBuffer.Clear();
+                            Static(" added!:\n");
+                        }
+                        else
+                            Static(" failed!:\n");
+                        break;
 
-                            Static("constructing set...\n");
-                            BuildingJoints = true;
-                            LoadJointIndex = 0;
-                            LoadSetDataBuffer = load[i];
-                            LoadCustomDataIndex++;
-                            return 0;
+                    case SeqTag:
+                        Static("sequence:\n");
+                        Sequence newSeq = new Sequence(load[i]);
+                        if (newSeq.BUILT) {
+                            sequenceBuffer.Add(newSeq);
+                            newSeq.AddChildren(kFrameBuffer);
+                            kFrameBuffer.Clear();
+                            Static(" added!:\n");
+                        }
+                        else
+                            Static(" failed!:\n");
+                        break;
 
-                        // SEQUENCES //
-                        case JframeTag:
-                            Static("jFrame:");
-                            JointFrame newJframe = LoadJointFrame(load[i], SetBuffer.GetJoint(jFrameBuffer.Count));
-                            if (newJframe.BUILT)
-                            {
-                                jFrameBuffer.Add(newJframe);
-                                Static(" added!:\n");
-                            }
-                            else
-                                Static(" failed!:\n");
-                            break;
-
-                        case KframeTag:
-                            Static("kFrame:");
-                            KeyFrame newKframe = LoadKeyFrame(load[i], jFrameBuffer);
-                            if (newKframe.BUILT)
-                            {
-                                kFrameBuffer.Add(newKframe);
-                                jFrameBuffer.Clear();
-                                Static(" added!:\n");
-                            }
-                            else
-                                Static(" failed!:\n");
-                            break;
-
-                        case ZframeTag:
-                            Static("Zero Frame:");
-                            KeyFrame zeroFrame = LoadKeyFrame(load[i], jFrameBuffer);
-                            if (zeroFrame.BUILT)
-                            {
-                                SetBuffer.ZeroFrame = zeroFrame;
-                                jFrameBuffer.Clear();
-                                Static(" added!:\n");
-                            }
-                            else
-                                Static(" failed!:\n");
-                            break;
-
-                        case SeqTag:
-                            Static("sequence:\n");
-                            Sequence newSeq = LoadSequence(load[i], SetBuffer, kFrameBuffer);
-                            if (newSeq.BUILT)
-                            {
-                                sequenceBuffer.Add(newSeq);
-                                kFrameBuffer.Clear();
-                                Static(" added!:\n");
-                            }
-                            else
-                                Static(" failed!:\n");
-                            break;
-
-                        default:
-                            break;
-                    }
+                    default:
+                        break;
                 }
-                catch
-                {
-                    Static("Fail Point!\n");
-                    JsetBin.Clear();
-                    return -1;
-                }
+                //}
+                //catch
+                //{
+                //    Static("Fail Point!\n");
+                //    JsetBin.Clear();
+                //    return -1;
+                //}
             }
 
             Startup();
             return 1;
         }
-        void LoadSettings(string input)
-        {
+        void LoadSettings(string input) {
             string[] data = input.Split(':');
-            for (int i = 0; i < Settings.Count; i++)
-            {
+            for (int i = 0; i < Settings.Count; i++) {
                 try { Settings[i].Change(float.Parse(data[i + 1])); }
                 catch { }
             }
 
         }
-        void LoadToggles(string input)
-        {
+        void LoadToggles(string input) {
             string[] data = input.Split(':');
-            for (int i = 0; i < Toggles.Count; i++)
-            {
+            for (int i = 0; i < Toggles.Count; i++) {
                 try { Toggles[i].Change(bool.Parse(data[i + 1])); }
                 catch { }
             }
         }
-        bool LoadJoints()
-        {
-            if (!SetBuffered)
-            {
+        bool LoadJoints() {
+            if (!SetBuffered) {
                 SetBuffer = LoadJointSet(LoadSetDataBuffer, DesignatedPlane, FeetBuffer);
-                if (SetBuffer == null)
-                {
+
+                if (!SetBuffer.BUILT)
+                    throw new Exception("Set not built!");
+
+                if (SetBuffer == null) {
                     Static("Set load failed!\n");
                     return true;
                 }
 
                 BlockBuffer = SetBuffer.Blocks;
-                if (BlockBuffer == null || BlockBuffer.Count < 1)
-                {
+                if (BlockBuffer == null || BlockBuffer.Count < 1) {
                     Static("Nothing to load!\n");
                     return true;
                 }
@@ -1495,25 +1355,22 @@ ALL_JOINTS:S:LOAD FINISHED
                 SetBuffered = true;
             }
 
-            SetBuffer.Sort(eRoot.JOINT);
+            //SetBuffer.Sort(eRoot.JOINT);
 
-            for (int i = LoadJointIndex; i < BlockBuffer.Count; i++)
-            {
+            for (int i = BlockBufferIndex; i < BlockBuffer.Count; i++) {
                 Echo($"Buffering:{i}");
-                LoadJointIndex = i;
+                BlockBufferIndex = i;
                 if (CheckCallLimit())
                     return false;
 
                 Static($"Loading joint: {BlockBuffer[i].CustomName} || {BlockBuffer[i].CustomData}\n");
 
-                if (BlockBuffer[i] is IMyLandingGear)
-                {
+                if (BlockBuffer[i] is IMyLandingGear) {
                     Magnet newMagnet = LoadMagnet((IMyLandingGear)BlockBuffer[i]);
                     AppendMagnet(SetBuffer, newMagnet);
                 }
 
-                if (BlockBuffer[i] is IMyMechanicalConnectionBlock)
-                {
+                if (BlockBuffer[i] is IMyMechanicalConnectionBlock) {
                     Joint newJoint = LoadJoint((IMyMechanicalConnectionBlock)BlockBuffer[i]);
                     AppendJoint(SetBuffer, newJoint);
                 }
@@ -1524,8 +1381,7 @@ ALL_JOINTS:S:LOAD FINISHED
             SetBuffered = false;
             return true;
         }
-        void Startup()
-        {
+        void Startup() {
             if (!IgnoreSave.MyState())
                 StartSave();
 
@@ -1550,19 +1406,17 @@ ALL_JOINTS:S:LOAD FINISHED
 
             Static("Loading walk...\n");
 
-            LoadWalk(CurrentWalkSet.GetSequence(0));
+            LoadWalk(CurrentWalkSet.GetChildByIndex<Sequence>(0));
         }
 
         static JointSet LoadJointSet(string input, IMyTerminalBlock plane, List<Foot> footBuffer) { return new JointSet(input, plane, footBuffer); }
-        static Joint LoadJoint(IMyMechanicalConnectionBlock jointBlock)
-        {
+        static Joint LoadJoint(IMyMechanicalConnectionBlock jointBlock) {
             Joint loadedJoint = null;
 
             if (jointBlock is IMyPistonBase)
                 loadedJoint = new Piston((IMyPistonBase)jointBlock);
 
-            if (jointBlock is IMyMotorStator)
-            {
+            if (jointBlock is IMyMotorStator) {
                 if (jointBlock.BlockDefinition.ToString().Contains("Hinge"))
                     loadedJoint = new Hinge((IMyMotorStator)jointBlock);
                 else
@@ -1576,23 +1430,21 @@ ALL_JOINTS:S:LOAD FINISHED
             return loadedJoint;
         }
         static Magnet LoadMagnet(IMyLandingGear gear) { Magnet loadedMagnet = new Magnet(gear); MagnetBin.Add(loadedMagnet); return loadedMagnet; }
-        static Foot LoadFoot(string input) { return new Foot(input); }
+        /*static Foot LoadFoot(string input) { return new Foot(input); }
         static Sequence LoadSequence(string input, JointSet set, List<KeyFrame> buffer) { return new Sequence(input, set, buffer); }
         static KeyFrame LoadKeyFrame(string input, List<JointFrame> buffer) { return new KeyFrame(input, buffer); }
-        static JointFrame LoadJointFrame(string input, Joint joint) { return new JointFrame(input, joint); }
+        static JointFrame LoadJointFrame(string input, JointSet jointSet) { return new JointFrame(input, jointSet); }*/
         #endregion
 
         #region SAVE
 
-        static void StartSave()
-        {
+        static void StartSave() {
             SavingData = true;
             SaveInit = false;
             JointsSaved = false;
             SequencesSaved = false;
         }
-        int DataSave()
-        {
+        int DataSave() {
             if (!SaveInit)
                 SaveInitializer();
 
@@ -1603,8 +1455,7 @@ ALL_JOINTS:S:LOAD FINISHED
 
             return 1;
         }
-        int SaveStack(SaveJob job, eRoot element = eRoot.DEFAULT, List<Root> roots = null)
-        {
+        int SaveStack<T>(SaveJob job, eRoot element = eRoot.DEFAULT, List<T> roots = null) where T : Root {
             Static($"Enter Stack: {element}\n");
 
             if (roots == null)
@@ -1617,8 +1468,7 @@ ALL_JOINTS:S:LOAD FINISHED
             }
 
 
-            for (int index = Saving(element); index < roots.Count; index++)
-            {
+            for (int index = Saving(element); index < roots.Count; index++) {
                 SetSaveIndex(element, index);
                 if (CheckCallLimit()) // Call stack limiter
                 {
@@ -1628,8 +1478,7 @@ ALL_JOINTS:S:LOAD FINISHED
 
 
                 int result = job();
-                if (result != 1)
-                {
+                if (result != 1) {
                     Static($"Save break {element} : {result}\n");
                     return result; // Save break
                 }
@@ -1643,14 +1492,12 @@ ALL_JOINTS:S:LOAD FINISHED
             Static($"Exit Stack: {element}\n");
             return 1;
         }
-        int SaveSet()
-        {
+        int SaveSet() {
             JointSet set = GetSavingSet();
             if (set == null)
                 return -1;
 
-            if (!JointsSaved)
-            {
+            if (!JointsSaved) {
                 int feetResult = SaveStack(SaveFoot, eRoot.FOOT, set.Feet);
                 if (feetResult != 1)
                     return feetResult;
@@ -1663,8 +1510,7 @@ ALL_JOINTS:S:LOAD FINISHED
                 JointsSaved = true;
             }
 
-            if(!SequencesSaved)
-            {
+            if (!SequencesSaved) {
                 int seqResult = SaveStack(SaveSequence, eRoot.SEQUENCE, set.Sequences);
                 if (seqResult != 1)
                     return seqResult;
@@ -1672,9 +1518,8 @@ ALL_JOINTS:S:LOAD FINISHED
                 SequencesSaved = true;
             }
 
-            int zeroFrameResult = SaveStack(SaveZeroFrame, eRoot.Z_FRAME);
-            if (zeroFrameResult != 1)
-            {
+            int zeroFrameResult = SaveStack<KeyFrame>(SaveZeroFrame, eRoot.Z_FRAME);
+            if (zeroFrameResult != 1) {
                 set.GenerateZeroFrame();
                 ResetSaveIndex(eRoot.J_FRAME);
                 return 0;
@@ -1690,8 +1535,7 @@ ALL_JOINTS:S:LOAD FINISHED
 
             return 1;
         }
-        int SaveFoot()
-        {
+        int SaveFoot() {
             Foot foot = GetSavingFoot();
             if (foot == null)
                 return -1;
@@ -1711,23 +1555,19 @@ ALL_JOINTS:S:LOAD FINISHED
 
             return 1;
         }
-        int SaveJoint()
-        {
+        int SaveJoint() {
             Joint joint = GetSavingJoint();
             return joint == null ? -1 : joint.Save() ? 1 : -1;
         }
-        int SaveToe()
-        {
+        int SaveToe() {
             Joint toe = GetSavingToe();
             return toe == null ? -1 : toe.Save() ? 1 : -1;
         }
-        int SaveMag()
-        {
+        int SaveMag() {
             Magnet mag = GetSavingMagnet();
             return mag == null ? -1 : mag.Save() ? 1 : -1;
         }
-        int SaveSequence()
-        {
+        int SaveSequence() {
             Sequence seq = GetSavingSequence();
             if (seq == null)
                 return -1;
@@ -1742,23 +1582,19 @@ ALL_JOINTS:S:LOAD FINISHED
 
             return 1;
         }
-        int SaveZeroFrame()
-        {
+        int SaveZeroFrame() {
             return SaveKeyFrame(GetSavingSet().ZeroFrame);
         }
-        int SaveAnimFrame()
-        {
+        int SaveAnimFrame() {
             return SaveKeyFrame(GetSavingKeyFrame());
         }
-        int SaveKeyFrame(KeyFrame frame)
-        {
+        int SaveKeyFrame(KeyFrame frame) {
             //KeyFrame frame = zeroFrame ?  : GetSavingKeyFrame();
-            if (frame == null)
-            {
+            if (frame == null) {
                 Static("No frame to save!\n");
                 return -1;
             }
-                
+
             int frameResult = SaveStack(SaveJointFrame, eRoot.J_FRAME, frame.Jframes);
             if (frameResult != 1)
                 return frameResult;
@@ -1769,8 +1605,7 @@ ALL_JOINTS:S:LOAD FINISHED
 
             return 1;
         }
-        int SaveJointFrame()
-        {
+        int SaveJointFrame() {
             JointFrame frame = GetSavingJointFrame();
             if (frame == null)
                 return -1;
@@ -1778,13 +1613,11 @@ ALL_JOINTS:S:LOAD FINISHED
             SaveData.Append($"{frame.SaveData()}\n");
             return 1;
         }
-        static int Saving(eRoot root)
-        {
+        static int Saving(eRoot root) {
             return SaveObjectIndex[(int)root];
         }
 
-        void SaveInitializer()
-        {
+        void SaveInitializer() {
             SaveData.Clear();
 
             SaveToggles();
@@ -1795,30 +1628,25 @@ ALL_JOINTS:S:LOAD FINISHED
 
             SaveInit = true;
         }
-        void SaveSettings()
-        {
+        void SaveSettings() {
             SaveData.Append($":{SettingsTag}");
             foreach (Setting setting in Settings)
                 SaveData.Append($":{setting.MyValue()}");
             SaveData.Append("\n");
         }
-        void SaveToggles()
-        {
+        void SaveToggles() {
             SaveData.Append($":{OptionsTag}");
             foreach (Toggle option in Toggles)
                 SaveData.Append($":{option.MyState()}");
             SaveData.Append("\n");
         }
-        void IncrementSaveIndex(eRoot root)
-        {
+        void IncrementSaveIndex(eRoot root) {
             SaveObjectIndex[(int)root]++;
         }
-        void SetSaveIndex(eRoot root, int index)
-        {
+        void SetSaveIndex(eRoot root, int index) {
             SaveObjectIndex[(int)root] = index;
         }
-        void ResetSaveIndex(eRoot root)
-        {
+        void ResetSaveIndex(eRoot root) {
             SaveObjectIndex[(int)root] = 0;
         }
         #endregion
@@ -1829,15 +1657,16 @@ ALL_JOINTS:S:LOAD FINISHED
         static TimeSpan GetGridTimeSinceLastRun() { return PROG.Runtime.TimeSinceLastRun; }
         static void GetGridBlockGroups(List<IMyBlockGroup> groups) { PROG.GridTerminalSystem.GetBlockGroups(groups); }
         static IMyBlockGroup GetGridBlockGroup(string name) {
-            if (name == null || name.Length < 1) return null;
+            if (name == null || name.Length < 1) throw new Exception("Invalid group name!");//return null;
             List<IMyBlockGroup> groups = new List<IMyBlockGroup>();
             PROG.GridTerminalSystem.GetBlockGroups(groups);
-            return groups.Find(x => x.Name == name);
+            IMyBlockGroup group = groups.Find(x => x.Name == name);
+            if (group == null) throw new Exception($"Group not found! : {name}");
+            return group;
         }
         static void GetGridBlocksOfType<T>(List<T> blocks) where T : class { blocks = new List<T>(); PROG.GridTerminalSystem.GetBlocksOfType(blocks); }
         static IMyTextSurface GetSurface(Screen screen) { try { return Screens[(int)screen]; } catch { return null; } }
-        static List<IMyTerminalBlock> GetBlocksFromGroup(string groupName)
-        {
+        static List<IMyTerminalBlock> GetBlocksFromGroup(string groupName) {
             if (groupName == null)
                 return null;
 
@@ -1847,40 +1676,34 @@ ALL_JOINTS:S:LOAD FINISHED
 
             return GetBlocksFromGroup(group);
         }
-        static List<IMyTerminalBlock> GetBlocksFromGroup(IMyBlockGroup group)
-        {
+        static List<IMyTerminalBlock> GetBlocksFromGroup(IMyBlockGroup group) {
             List<IMyTerminalBlock> blocks = new List<IMyTerminalBlock>();
             group.GetBlocks(blocks);
             return blocks;
         }
         static JointSet GetJointSet(int index) { return index < 0 || index > JsetBin.Count ? null : (JointSet)JsetBin[index]; }
         static JointSet GetSavingSet() { return GetJointSet(Saving(eRoot.JSET)); }
-        static JointSet GetSelectedSet()
-        {
+        static JointSet GetSelectedSet() {
             int? check = GetCurrentPage()?.SelectedIndex(eRoot.JSET);
             return check.HasValue ? GetJointSet(check.Value) : null;
         }
         static Animation GetSelectedAnim() { return GetCurrentPage()?.SelectedRoot() as Animation; }
-        static Sequence GetSavingSequence()
-        {
+        static Sequence GetSavingSequence() {
             JointSet set = GetSavingSet();
             if (set == null)
                 return null;
 
-            return set.GetSequence(Saving(eRoot.SEQUENCE));
+            return set.GetChildByIndex<Sequence>(Saving(eRoot.SEQUENCE));
         }
-        static Sequence GetSelectedSequence()
-        {
-            JointSet set = GetSelectedSet();
-            if (set == null)
-                return null;
+        static Sequence GetSelectedSequence() {
+            //JointSet set = GetSelectedSet();
+            //if (set == null)
+            //    return null;
             int? check = GetCurrentPage()?.SelectedIndex(eRoot.SEQUENCE);
-            return check.HasValue ? set.GetSequence(check.Value) : null;
+            return check.HasValue ? GetSelectedSet()?.GetChildByIndex<Sequence>(check.Value) : null;
         }
-        static KeyFrame GetSavingKeyFrame()
-        {
-            if (SequencesSaved)
-            {
+        static KeyFrame GetSavingKeyFrame() {
+            if (SequencesSaved) {
                 JointSet savingSet = GetSavingSet();
                 if (savingSet == null)
                     return null;
@@ -1891,61 +1714,53 @@ ALL_JOINTS:S:LOAD FINISHED
             Sequence seq = GetSavingSequence();
             if (seq == null)
                 return null;
-            return  seq.GetKeyFrame(Saving(eRoot.K_FRAME));
+            return seq.GetChildByIndex<KeyFrame>(Saving(eRoot.K_FRAME));
         }
-        static KeyFrame GetSelectedKeyFrame()
-        {
+        static KeyFrame GetSelectedKeyFrame() {
             Sequence seq = GetSelectedSequence();
             if (seq == null)
                 return null;
             int? check = GetCurrentPage()?.SelectedIndex(eRoot.K_FRAME);
-            return check.HasValue ? seq.GetKeyFrame(check.Value) : null;
+            return check.HasValue ? seq.GetChildByIndex<KeyFrame>(check.Value) : null;
         }
-        static JointFrame GetSavingJointFrame()
-        {
+        static JointFrame GetSavingJointFrame() {
             KeyFrame frame = GetSavingKeyFrame();
             if (frame == null)
                 return null;
-            return frame.GetJointFrameByFrameIndex(Saving(eRoot.J_FRAME));
+            return frame.GetChildByIndex<JointFrame>(Saving(eRoot.J_FRAME));
         }
-        static JointFrame GetSelectedJointFrame()
-        {
+        static JointFrame GetSelectedJointFrame() {
             KeyFrame frame = GetSelectedKeyFrame();
             if (frame == null)
                 return null;
             int? check = GetCurrentPage()?.SelectedIndex(eRoot.J_FRAME);
-            return check.HasValue ? frame.GetJointFrameByFrameIndex(check.Value) : null;
+            return check.HasValue ? frame.GetChildByIndex<JointFrame>(check.Value) : null;
         }
-        static Foot GetSavingFoot()
-        {
+        static Foot GetSavingFoot() {
             JointSet set = GetSavingSet();
             if (set == null)
                 return null;
-            return set.GetFoot(Saving(eRoot.FOOT));
+            return set.GetChildByIndex<Foot>(Saving(eRoot.FOOT));
         }
-        static Joint GetSavingJoint()
-        {
+        static Joint GetSavingJoint() {
             JointSet set = GetSavingSet();
             if (set == null)
                 return null;
-            return set.GetJoint(Saving(eRoot.JOINT));
+            return set.GetChildByIndex<Joint>(Saving(eRoot.JOINT));
         }
-        static Joint GetSavingToe()
-        {
+        static Joint GetSavingToe() {
             Foot foot = GetSavingFoot();
             if (foot == null)
                 return null;
             return foot.GetToe(Saving(eRoot.TOE));
         }
-        static Magnet GetSavingMagnet()
-        {
+        static Magnet GetSavingMagnet() {
             Foot foot = GetSavingFoot();
             if (foot == null)
                 return null;
             return foot.GetMagnet(Saving(eRoot.MAGNET));
         }
-        static Page GetCurrentPage()
-        {
+        static Page GetCurrentPage() {
             return Pages[GetCurrentGuiMode()];
         }
 

@@ -3,12 +3,60 @@
   "WorkspaceRootPath": "C:\\Repos\\SpaceEngineers\\Mech2.0\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|c:\\repos\\spaceengineers\\mech2.0\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|c:\\repos\\spaceengineers\\mech2.0\\savedataattribute.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|solutionrelative:savedataattribute.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|c:\\repos\\spaceengineers\\mech2.0\\functionalgroup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|solutionrelative:functionalgroup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|c:\\repos\\spaceengineers\\mech2.0\\tablepage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|solutionrelative:tablepage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|c:\\repos\\spaceengineers\\mech2.0\\foot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|solutionrelative:foot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|c:\\repos\\spaceengineers\\mech2.0\\librarypage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|solutionrelative:librarypage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|c:\\repos\\spaceengineers\\mech2.0\\rotor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|solutionrelative:rotor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|c:\\repos\\spaceengineers\\mech2.0\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|c:\\repos\\spaceengineers\\mech2.0\\root.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|solutionrelative:root.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|c:\\repos\\spaceengineers\\mech2.0\\sequence.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|solutionrelative:sequence.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|c:\\repos\\spaceengineers\\mech2.0\\keyframe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|solutionrelative:keyframe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|c:\\repos\\spaceengineers\\mech2.0\\animation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|solutionrelative:animation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|c:\\repos\\spaceengineers\\mech2.0\\jointframe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|solutionrelative:jointframe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|c:\\repos\\spaceengineers\\mech2.0\\piston.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|solutionrelative:piston.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|c:\\repos\\spaceengineers\\mech2.0\\jointset.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|solutionrelative:jointset.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|c:\\repos\\spaceengineers\\mech2.0\\joint.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -19,44 +67,32 @@
       "RelativeMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|solutionrelative:hinge.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|c:\\repos\\spaceengineers\\mech2.0\\piston.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|solutionrelative:piston.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|c:\\repos\\spaceengineers\\mech2.0\\eroot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|solutionrelative:eroot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|c:\\repos\\spaceengineers\\mech2.0\\root.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|solutionrelative:root.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|c:\\repos\\spaceengineers\\mech2.0\\magnet.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|solutionrelative:magnet.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|c:\\repos\\spaceengineers\\mech2.0\\functional.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|solutionrelative:functional.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|c:\\repos\\spaceengineers\\mech2.0\\toggle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|solutionrelative:toggle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|c:\\repos\\spaceengineers\\mech2.0\\rootsort.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|solutionrelative:rootsort.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|c:\\repos\\spaceengineers\\mech2.0\\setting.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|solutionrelative:setting.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|c:\\repos\\spaceengineers\\mech2.0\\sequence.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|solutionrelative:sequence.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|c:\\repos\\spaceengineers\\mech2.0\\rotor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|solutionrelative:rotor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|c:\\repos\\spaceengineers\\mech2.0\\rootsort.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|solutionrelative:rootsort.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|c:\\repos\\spaceengineers\\mech2.0\\toggle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|solutionrelative:toggle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|c:\\repos\\spaceengineers\\mech2.0\\rootdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|solutionrelative:rootdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|c:\\repos\\spaceengineers\\mech2.0\\param_custom.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|solutionrelative:param_custom.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|c:\\repos\\spaceengineers\\mech2.0\\pagedata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -83,26 +119,6 @@
       "RelativeMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|solutionrelative:mechaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|c:\\repos\\spaceengineers\\mech2.0\\magnet.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|solutionrelative:magnet.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|c:\\repos\\spaceengineers\\mech2.0\\librarypage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|solutionrelative:librarypage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|c:\\repos\\spaceengineers\\mech2.0\\keyframe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|solutionrelative:keyframe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|c:\\repos\\spaceengineers\\mech2.0\\jointset.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|solutionrelative:jointset.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|c:\\repos\\spaceengineers\\mech2.0\\jointframe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|solutionrelative:jointframe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|c:\\repos\\spaceengineers\\mech2.0\\jointdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|solutionrelative:jointdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -115,20 +131,8 @@
       "RelativeMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|solutionrelative:guikey.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|c:\\repos\\spaceengineers\\mech2.0\\group.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|solutionrelative:group.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|c:\\repos\\spaceengineers\\mech2.0\\genericpage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|solutionrelative:genericpage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|c:\\repos\\spaceengineers\\mech2.0\\foot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|solutionrelative:foot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|c:\\repos\\spaceengineers\\mech2.0\\eroot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|solutionrelative:eroot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|c:\\repos\\spaceengineers\\mech2.0\\controlpage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -145,10 +149,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|c:\\repos\\spaceengineers\\mech2.0\\animationdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|solutionrelative:animationdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|c:\\repos\\spaceengineers\\mech2.0\\animation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D0E797C4-A8DC-4D8D-95C9-1A8F62616721}|Mech2.0.csproj|solutionrelative:animation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -158,190 +158,216 @@
       "DocumentGroups": [
         {
           "DockedWidth": 215,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 11,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "Toggle.cs",
-              "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\Toggle.cs",
-              "RelativeDocumentMoniker": "Toggle.cs",
-              "ToolTip": "C:\\Repos\\SpaceEngineers\\Mech2.0\\Toggle.cs",
-              "RelativeToolTip": "Toggle.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAA5AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-12T00:51:48.554Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "Setting.cs",
-              "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\Setting.cs",
-              "RelativeDocumentMoniker": "Setting.cs",
-              "ToolTip": "C:\\Repos\\SpaceEngineers\\Mech2.0\\Setting.cs",
-              "RelativeToolTip": "Setting.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-12T00:51:46.786Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "PageData.cs",
-              "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\PageData.cs",
-              "RelativeDocumentMoniker": "PageData.cs",
-              "ToolTip": "C:\\Repos\\SpaceEngineers\\Mech2.0\\PageData.cs",
-              "RelativeToolTip": "PageData.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-12T00:51:36.491Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{cf577b8c-4134-11d2-83e5-00c04f9902c1}"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "PARAM_custom.cs",
-              "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\PARAM_custom.cs",
-              "RelativeDocumentMoniker": "PARAM_custom.cs",
-              "ToolTip": "C:\\Repos\\SpaceEngineers\\Mech2.0\\PARAM_custom.cs",
-              "RelativeToolTip": "PARAM_custom.cs",
-              "ViewState": "AgIAAAoAAAAAAAAAAAAgwB8AAAAcAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-09T08:53:15.65Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "Piston.cs",
-              "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\Piston.cs",
-              "RelativeDocumentMoniker": "Piston.cs",
-              "ToolTip": "C:\\Repos\\SpaceEngineers\\Mech2.0\\Piston.cs",
-              "RelativeToolTip": "Piston.cs",
-              "ViewState": "AgIAAAQAAAAAAAAAAAAWwA8AAABWAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-09T08:27:54.41Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 6,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
               "ToolTip": "C:\\Repos\\SpaceEngineers\\Mech2.0\\Program.cs",
               "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAO4EAAAAAAAAAAAqwLEEAAAaAAAAAAAAAA==",
+              "ViewState": "AgIAAJIGAAAAAAAAAAAcwJ4GAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-09T08:07:25.004Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 8,
+              "Title": "Sequence.cs",
+              "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\Sequence.cs",
+              "RelativeDocumentMoniker": "Sequence.cs",
+              "ToolTip": "C:\\Repos\\SpaceEngineers\\Mech2.0\\Sequence.cs",
+              "RelativeToolTip": "Sequence.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAlwBgAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-10T23:52:57.4Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
               "Title": "Root.cs",
               "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\Root.cs",
               "RelativeDocumentMoniker": "Root.cs",
               "ToolTip": "C:\\Repos\\SpaceEngineers\\Mech2.0\\Root.cs",
               "RelativeToolTip": "Root.cs",
-              "ViewState": "AgIAACUAAAAAAAAAAAAjwDIAAAA2AAAAAAAAAA==",
+              "ViewState": "AgIAABUAAAAAAAAAAAAlwCMAAABSAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-09T09:17:49.531Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "RootData.cs",
-              "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\RootData.cs",
-              "RelativeDocumentMoniker": "RootData.cs",
-              "ToolTip": "C:\\Repos\\SpaceEngineers\\Mech2.0\\RootData.cs",
-              "RelativeToolTip": "RootData.cs",
-              "ViewState": "AgIAAAUAAAAAAAAAAAAQwBIAAAAcAAAAAAAAAA==",
+              "DocumentIndex": 9,
+              "Title": "KeyFrame.cs",
+              "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\KeyFrame.cs",
+              "RelativeDocumentMoniker": "KeyFrame.cs",
+              "ToolTip": "C:\\Repos\\SpaceEngineers\\Mech2.0\\KeyFrame.cs",
+              "RelativeToolTip": "KeyFrame.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAAlwCEAAAA6AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-11T00:10:31.122Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "RootSort.cs",
-              "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\RootSort.cs",
-              "RelativeDocumentMoniker": "RootSort.cs",
-              "ToolTip": "C:\\Repos\\SpaceEngineers\\Mech2.0\\RootSort.cs",
-              "RelativeToolTip": "RootSort.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-11T22:50:52.821Z",
+              "WhenOpened": "2025-02-11T01:08:51.439Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 10,
-              "Title": "Rotor.cs",
-              "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\Rotor.cs",
-              "RelativeDocumentMoniker": "Rotor.cs",
-              "ToolTip": "C:\\Repos\\SpaceEngineers\\Mech2.0\\Rotor.cs",
-              "RelativeToolTip": "Rotor.cs",
-              "ViewState": "AgIAAA0AAAAAAAAAAAAjwBkAAABOAAAAAAAAAA==",
+              "Title": "Animation.cs",
+              "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\Animation.cs",
+              "RelativeDocumentMoniker": "Animation.cs",
+              "ToolTip": "C:\\Repos\\SpaceEngineers\\Mech2.0\\Animation.cs",
+              "RelativeToolTip": "Animation.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAxwBkAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-11T00:30:31.844Z",
+              "WhenOpened": "2025-02-09T08:08:30.723Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 11,
+              "Title": "JointFrame.cs",
+              "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\JointFrame.cs",
+              "RelativeDocumentMoniker": "JointFrame.cs",
+              "ToolTip": "C:\\Repos\\SpaceEngineers\\Mech2.0\\JointFrame.cs",
+              "RelativeToolTip": "JointFrame.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAQwBwAAABMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-11T01:07:08.303Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "LibraryPage.cs",
+              "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\LibraryPage.cs",
+              "RelativeDocumentMoniker": "LibraryPage.cs",
+              "ToolTip": "C:\\Repos\\SpaceEngineers\\Mech2.0\\LibraryPage.cs",
+              "RelativeToolTip": "LibraryPage.cs",
+              "ViewState": "AgIAACYBAAAAAAAAAAAkwDkBAABFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-11T00:13:22.005Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "TablePage.cs",
               "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\TablePage.cs",
               "RelativeDocumentMoniker": "TablePage.cs",
               "ToolTip": "C:\\Repos\\SpaceEngineers\\Mech2.0\\TablePage.cs",
               "RelativeToolTip": "TablePage.cs",
-              "ViewState": "AgIAAJUAAAAAAAAAAAAUwKIAAAAlAAAAAAAAAA==",
+              "ViewState": "AgIAAPUAAAAAAAAAAAAkwAIBAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-09T09:08:52.09Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
+              "Title": "Foot.cs",
+              "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\Foot.cs",
+              "RelativeDocumentMoniker": "Foot.cs",
+              "ToolTip": "C:\\Repos\\SpaceEngineers\\Mech2.0\\Foot.cs",
+              "RelativeToolTip": "Foot.cs",
+              "ViewState": "AgIAAHwAAAAAAAAAAAAnwJIAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-11T00:58:26.659Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Rotor.cs",
+              "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\Rotor.cs",
+              "RelativeDocumentMoniker": "Rotor.cs",
+              "ToolTip": "C:\\Repos\\SpaceEngineers\\Mech2.0\\Rotor.cs",
+              "RelativeToolTip": "Rotor.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAkAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-11T00:30:31.844Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "SaveDataAttribute.cs",
+              "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\SaveDataAttribute.cs",
+              "RelativeDocumentMoniker": "SaveDataAttribute.cs",
+              "ToolTip": "C:\\Repos\\SpaceEngineers\\Mech2.0\\SaveDataAttribute.cs",
+              "RelativeToolTip": "SaveDataAttribute.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-09T08:53:15.65Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "FunctionalGroup.cs",
+              "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\FunctionalGroup.cs",
+              "RelativeDocumentMoniker": "FunctionalGroup.cs",
+              "ToolTip": "C:\\Repos\\SpaceEngineers\\Mech2.0\\FunctionalGroup.cs",
+              "RelativeToolTip": "FunctionalGroup.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAxwAgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-11T23:46:09.382Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Piston.cs",
+              "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\Piston.cs",
+              "RelativeDocumentMoniker": "Piston.cs",
+              "ToolTip": "C:\\Repos\\SpaceEngineers\\Mech2.0\\Piston.cs",
+              "RelativeToolTip": "Piston.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAwwBUAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-09T08:27:54.41Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "JointSet.cs",
+              "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\JointSet.cs",
+              "RelativeDocumentMoniker": "JointSet.cs",
+              "ToolTip": "C:\\Repos\\SpaceEngineers\\Mech2.0\\JointSet.cs",
+              "RelativeToolTip": "JointSet.cs",
+              "ViewState": "AgIAAM0AAAAAAAAAAAAYwN0AAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-11T01:24:19.728Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
               "Title": "Joint.cs",
               "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\Joint.cs",
               "RelativeDocumentMoniker": "Joint.cs",
               "ToolTip": "C:\\Repos\\SpaceEngineers\\Mech2.0\\Joint.cs",
               "RelativeToolTip": "Joint.cs",
-              "ViewState": "AgIAACwAAAAAAAAAAAAjwD8AAAAOAAAAAAAAAA==",
+              "ViewState": "AgIAADQAAAAAAAAAAAAlwEsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-10T23:55:11.582Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Functional.cs",
-              "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\Functional.cs",
-              "RelativeDocumentMoniker": "Functional.cs",
-              "ToolTip": "C:\\Repos\\SpaceEngineers\\Mech2.0\\Functional.cs",
-              "RelativeToolTip": "Functional.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAANAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-11T00:30:57.975Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 15,
               "Title": "Hinge.cs",
               "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\Hinge.cs",
               "RelativeDocumentMoniker": "Hinge.cs",
               "ToolTip": "C:\\Repos\\SpaceEngineers\\Mech2.0\\Hinge.cs",
               "RelativeToolTip": "Hinge.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAWwA4AAAAuAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwBMAAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-11T00:30:18.484Z",
               "EditorCaption": ""
@@ -349,6 +375,106 @@
             {
               "$type": "Document",
               "DocumentIndex": 16,
+              "Title": "eRoot.cs",
+              "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\eRoot.cs",
+              "RelativeDocumentMoniker": "eRoot.cs",
+              "ToolTip": "C:\\Repos\\SpaceEngineers\\Mech2.0\\eRoot.cs",
+              "RelativeToolTip": "eRoot.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAD4vxQAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-09T08:08:26.706Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "Magnet.cs",
+              "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\Magnet.cs",
+              "RelativeDocumentMoniker": "Magnet.cs",
+              "ToolTip": "C:\\Repos\\SpaceEngineers\\Mech2.0\\Magnet.cs",
+              "RelativeToolTip": "Magnet.cs",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAEwA4AAABMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-10T23:57:09.983Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "Functional.cs",
+              "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\Functional.cs",
+              "RelativeDocumentMoniker": "Functional.cs",
+              "ToolTip": "C:\\Repos\\SpaceEngineers\\Mech2.0\\Functional.cs",
+              "RelativeToolTip": "Functional.cs",
+              "ViewState": "AgIAABQAAAAAAAAAAAAwwCQAAAA8AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-11T00:30:57.975Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "RootSort.cs",
+              "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\RootSort.cs",
+              "RelativeDocumentMoniker": "RootSort.cs",
+              "ToolTip": "C:\\Repos\\SpaceEngineers\\Mech2.0\\RootSort.cs",
+              "RelativeToolTip": "RootSort.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAkAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-11T22:50:52.821Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "Setting.cs",
+              "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\Setting.cs",
+              "RelativeDocumentMoniker": "Setting.cs",
+              "ToolTip": "C:\\Repos\\SpaceEngineers\\Mech2.0\\Setting.cs",
+              "RelativeToolTip": "Setting.cs",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAwwBUAAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-12T00:51:46.786Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "PageData.cs",
+              "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\PageData.cs",
+              "RelativeDocumentMoniker": "PageData.cs",
+              "ToolTip": "C:\\Repos\\SpaceEngineers\\Mech2.0\\PageData.cs",
+              "RelativeToolTip": "PageData.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-12T00:51:36.491Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "RootData.cs",
+              "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\RootData.cs",
+              "RelativeDocumentMoniker": "RootData.cs",
+              "ToolTip": "C:\\Repos\\SpaceEngineers\\Mech2.0\\RootData.cs",
+              "RelativeToolTip": "RootData.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAQwBIAAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-11T00:10:31.122Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "Toggle.cs",
+              "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\Toggle.cs",
+              "RelativeDocumentMoniker": "Toggle.cs",
+              "ToolTip": "C:\\Repos\\SpaceEngineers\\Mech2.0\\Toggle.cs",
+              "RelativeToolTip": "Toggle.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAA5AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-12T00:51:48.554Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
               "Title": "OptionsPage.cs",
               "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\OptionsPage.cs",
               "RelativeDocumentMoniker": "OptionsPage.cs",
@@ -356,12 +482,11 @@
               "RelativeToolTip": "OptionsPage.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-12T00:51:33.098Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-12T00:51:33.098Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 26,
               "Title": "Option.cs",
               "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\Option.cs",
               "RelativeDocumentMoniker": "Option.cs",
@@ -369,12 +494,11 @@
               "RelativeToolTip": "Option.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-12T00:51:32.443Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-12T00:51:32.443Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 27,
               "Title": "MechIx.cs",
               "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\MechIx.cs",
               "RelativeDocumentMoniker": "MechIx.cs",
@@ -382,12 +506,11 @@
               "RelativeToolTip": "MechIx.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-12T00:51:31.666Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-12T00:51:31.666Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 28,
               "Title": "MechAction.cs",
               "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\MechAction.cs",
               "RelativeDocumentMoniker": "MechAction.cs",
@@ -395,38 +518,11 @@
               "RelativeToolTip": "MechAction.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-12T00:51:29.834Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-12T00:51:29.834Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "Sequence.cs",
-              "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\Sequence.cs",
-              "RelativeDocumentMoniker": "Sequence.cs",
-              "ToolTip": "C:\\Repos\\SpaceEngineers\\Mech2.0\\Sequence.cs",
-              "RelativeToolTip": "Sequence.cs",
-              "ViewState": "AgIAAL0AAAAAAAAAAAAjwMwAAAAzAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-10T23:52:57.4Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 24,
-              "Title": "JointFrame.cs",
-              "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\JointFrame.cs",
-              "RelativeDocumentMoniker": "JointFrame.cs",
-              "ToolTip": "C:\\Repos\\SpaceEngineers\\Mech2.0\\JointFrame.cs",
-              "RelativeToolTip": "JointFrame.cs",
-              "ViewState": "AgIAAAIAAAAAAAAAAAAWwA0AAAArAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-11T01:07:08.303Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 25,
+              "DocumentIndex": 29,
               "Title": "JointData.cs",
               "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\JointData.cs",
               "RelativeDocumentMoniker": "JointData.cs",
@@ -434,12 +530,11 @@
               "RelativeToolTip": "JointData.cs",
               "ViewState": "AgIAAAMAAAAAAAAAAAAqwA4AAAAhAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-11T00:07:05.392Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-11T00:07:05.392Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 26,
+              "DocumentIndex": 30,
               "Title": "GUIMode.cs",
               "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\GUIMode.cs",
               "RelativeDocumentMoniker": "GUIMode.cs",
@@ -447,12 +542,11 @@
               "RelativeToolTip": "GUIMode.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-12T00:51:17.79Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-12T00:51:17.79Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 27,
+              "DocumentIndex": 31,
               "Title": "GUIKey.cs",
               "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\GUIKey.cs",
               "RelativeDocumentMoniker": "GUIKey.cs",
@@ -460,12 +554,11 @@
               "RelativeToolTip": "GUIKey.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-12T00:51:16.811Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-12T00:51:16.811Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 29,
+              "DocumentIndex": 32,
               "Title": "GenericPage.cs",
               "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\GenericPage.cs",
               "RelativeDocumentMoniker": "GenericPage.cs",
@@ -473,12 +566,11 @@
               "RelativeToolTip": "GenericPage.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-12T00:51:14.443Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-12T00:51:14.443Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 24,
               "Title": "Page.cs",
               "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\Page.cs",
               "RelativeDocumentMoniker": "Page.cs",
@@ -486,12 +578,11 @@
               "RelativeToolTip": "Page.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAPAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-09T09:06:28.949Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-09T09:06:28.949Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 33,
+              "DocumentIndex": 34,
               "Title": "ClockMode.cs",
               "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\ClockMode.cs",
               "RelativeDocumentMoniker": "ClockMode.cs",
@@ -499,64 +590,11 @@
               "RelativeToolTip": "ClockMode.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-09T08:08:17.459Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-09T08:08:17.459Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 23,
-              "Title": "JointSet.cs",
-              "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\JointSet.cs",
-              "RelativeDocumentMoniker": "JointSet.cs",
-              "ToolTip": "C:\\Repos\\SpaceEngineers\\Mech2.0\\JointSet.cs",
-              "RelativeToolTip": "JointSet.cs",
-              "ViewState": "AgIAAP0AAAAAAAAAAAArwAoBAAAoAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-11T01:24:19.728Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 22,
-              "Title": "KeyFrame.cs",
-              "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\KeyFrame.cs",
-              "RelativeDocumentMoniker": "KeyFrame.cs",
-              "ToolTip": "C:\\Repos\\SpaceEngineers\\Mech2.0\\KeyFrame.cs",
-              "RelativeToolTip": "KeyFrame.cs",
-              "ViewState": "AgIAAAEAAAAAAAAAAAAWwA8AAAA/AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-11T01:08:51.439Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 21,
-              "Title": "LibraryPage.cs",
-              "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\LibraryPage.cs",
-              "RelativeDocumentMoniker": "LibraryPage.cs",
-              "ToolTip": "C:\\Repos\\SpaceEngineers\\Mech2.0\\LibraryPage.cs",
-              "RelativeToolTip": "LibraryPage.cs",
-              "ViewState": "AgIAAGEAAAAAAAAAAAAwwG4AAAAlAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-11T00:13:22.005Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 20,
-              "Title": "Magnet.cs",
-              "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\Magnet.cs",
-              "RelativeDocumentMoniker": "Magnet.cs",
-              "ToolTip": "C:\\Repos\\SpaceEngineers\\Mech2.0\\Magnet.cs",
-              "RelativeToolTip": "Magnet.cs",
-              "ViewState": "AgIAAC0AAAAAAAAAAAAjwD4AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-10T23:57:09.983Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 34,
+              "DocumentIndex": 35,
               "Title": "Button.cs",
               "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\Button.cs",
               "RelativeDocumentMoniker": "Button.cs",
@@ -564,25 +602,11 @@
               "RelativeToolTip": "Button.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-12T00:51:04.952Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-12T00:51:04.952Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 36,
-              "Title": "Animation.cs",
-              "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\Animation.cs",
-              "RelativeDocumentMoniker": "Animation.cs",
-              "ToolTip": "C:\\Repos\\SpaceEngineers\\Mech2.0\\Animation.cs",
-              "RelativeToolTip": "Animation.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAgAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-09T08:08:30.723Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 32,
+              "DocumentIndex": 33,
               "Title": "ControlPage.cs",
               "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\ControlPage.cs",
               "RelativeDocumentMoniker": "ControlPage.cs",
@@ -590,51 +614,11 @@
               "RelativeToolTip": "ControlPage.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-09T08:08:21.123Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-09T08:08:21.123Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 28,
-              "Title": "Group.cs",
-              "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\Group.cs",
-              "RelativeDocumentMoniker": "Group.cs",
-              "ToolTip": "C:\\Repos\\SpaceEngineers\\Mech2.0\\Group.cs",
-              "RelativeToolTip": "Group.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAARAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-11T23:46:09.382Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 31,
-              "Title": "eRoot.cs",
-              "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\eRoot.cs",
-              "RelativeDocumentMoniker": "eRoot.cs",
-              "ToolTip": "C:\\Repos\\SpaceEngineers\\Mech2.0\\eRoot.cs",
-              "RelativeToolTip": "eRoot.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-09T08:08:26.706Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 30,
-              "Title": "Foot.cs",
-              "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\Foot.cs",
-              "RelativeDocumentMoniker": "Foot.cs",
-              "ToolTip": "C:\\Repos\\SpaceEngineers\\Mech2.0\\Foot.cs",
-              "RelativeToolTip": "Foot.cs",
-              "ViewState": "AgIAACgAAAAAAAAAAAAjwDcAAAAhAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-11T00:58:26.659Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 35,
+              "DocumentIndex": 36,
               "Title": "AnimationData.cs",
               "DocumentMoniker": "C:\\Repos\\SpaceEngineers\\Mech2.0\\AnimationData.cs",
               "RelativeDocumentMoniker": "AnimationData.cs",
@@ -642,8 +626,7 @@
               "RelativeToolTip": "AnimationData.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAKAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-09T08:08:32.012Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-09T08:08:32.012Z"
             }
           ]
         }

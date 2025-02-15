@@ -8,28 +8,21 @@ namespace IngameScript
 {
     partial class Program {
         class Rotor : Joint {
-            public IMyMotorStator Stator;
+            public IMyMotorStator Stator => (IMyMotorStator)FuncBlock;
 
             /// <summary>
-            /// tag unspecified
+            /// Create
             /// </summary>
             /// <param name="stator"></param>
-            /// <param name="intData"></param>
-            public Rotor(IMyMotorStator stator, int[] intData) : this(stator, null, intData) { }
+            /// <param name="uniqueID"></param>
+            /// <param name="footID"></param>
+            public Rotor(IMyMotorStator stator, int uniqueID, int footID = -1) : base(stator, uniqueID, footID) { }
 
             /// <summary>
-            /// tag specified
+            /// Load
             /// </summary>
             /// <param name="stator"></param>
-            /// <param name="tag"></param>
-            /// <param name="intData"></param>
-            public Rotor(IMyMotorStator stator, string tag, int[] intData) : base(stator, tag, intData) {
-                Stator = stator;
-            }
-
-            public Rotor(IMyMotorStator stator) : base(stator) {
-                Stator = stator;
-            }
+            public Rotor(IMyMotorStator stator) : base(stator) { }
             public override void SetForce(bool max) {
                 base.SetForce(max);
                 Connection.SetValue("Torque", CurrentForce);
@@ -61,6 +54,8 @@ namespace IngameScript
 
                 AnimTarget = (AnimTarget < 0) ? AnimTarget + 360 : AnimTarget;
             }
+
+
             public override void UpdateCorrectionDisplacement()
             {
                 double current = (Stator.Angle * RAD2DEG);

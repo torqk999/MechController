@@ -10,21 +10,13 @@ namespace IngameScript
 
         class Piston : Joint
         {
-            public IMyPistonBase PistonBase;
+            public IMyPistonBase PistonBase => (IMyPistonBase)FuncBlock;
+            public JointSet ParentSet => (JointSet)Parent;
             public Joint Reference;
 
-            public Piston(IMyPistonBase pistonBase, int[] intData) : base(pistonBase, intData)
-            {
-                PistonBase = pistonBase;
-            }
-            public Piston(IMyPistonBase pistonBase) : base(pistonBase)
-            {
-                PistonBase = pistonBase;
-            }
-            public override void Sync()
-            {
-                Reference = Parent.GetJoint(SyncIndex);
-            }
+            public Piston(IMyPistonBase pistonBase, int uniqueID, int footID) : base(pistonBase, uniqueID, footID) { }
+            public Piston(IMyPistonBase pistonBase) : base(pistonBase) { }
+            public override void Sync() { Reference = ParentSet?.GetChildByID<Joint>(SyncID); }
 
             public override void SetForce(bool max)
             {
@@ -38,7 +30,7 @@ namespace IngameScript
             public override double CurrentPosition()
             {
                 StreamDlog($"Reference Exists: {Reference != null}\n" +
-                    $"SyncIndex: {SyncIndex}");
+                    $"SyncIndex: {SyncID}");
 
                 if (Reference != null)
                 {

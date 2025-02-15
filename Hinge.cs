@@ -10,21 +10,17 @@ namespace IngameScript
     {
         class Hinge : Joint
         {
-            public IMyMotorStator Stator;
+            public IMyMotorStator Stator => (IMyMotorStator)FuncBlock;
 
-            public Hinge(IMyMotorStator stator, int[] intData) : base(stator, intData)
-            {
-                Stator = stator;
-            }
-            public Hinge(IMyMotorStator stator) : base(stator)
-            {
-                Stator = stator;
-            }
+            public Hinge(IMyMotorStator stator, int uniqueID, int footID = -1) : base(stator, uniqueID, footID) { }
+            public Hinge(IMyMotorStator stator) : base(stator) { }
+
             public override void SetForce(bool max)
             {
                 base.SetForce(max);
                 Connection.SetValue("Torque", CurrentForce);
             }
+
             public override float TorqueMax()
             {
                 return Connection.GetMaximum<float>("Torque");

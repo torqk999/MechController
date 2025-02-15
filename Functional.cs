@@ -1,4 +1,5 @@
 ﻿//using Sandbox.ModAPI;
+using SpaceEngineers.Game.ModAPI.Ingame;
 using Sandbox.ModAPI.Ingame;
 using System.Collections.Generic;
 using VRage.GameServices;
@@ -9,19 +10,35 @@ namespace IngameScript
     {
         class Functional : Root
         {
-            IMyFunctionalBlock FuncBlock;
-            public int FootIndex;
+            public IMyFunctionalBlock FuncBlock { get; private set; }
+            public int FootID;
             public Functional(IMyFunctionalBlock funcBlock) : base(funcBlock.CustomData) {
-                FuncBlock = funcBlock;
+                this.FuncBlock = funcBlock;
             }
-            public Functional(IMyFunctionalBlock funcBlock, int[] intData) : base(intData) {
-                TAG = ParseBlockTag(funcBlock, intData[(int)PARAM_int.fIX] > -1);
-                FuncBlock = funcBlock;
+            public Functional(IMyFunctionalBlock funcBlock, int uniqueID, int footID = -1) : base(uniqueID) {
+                this.FuncBlock = funcBlock;
+                FootID = footID;
+                TAG = ParseBlockTag(funcBlock);
             }
 
             public override string Name {
                 get { return FuncBlock?.CustomName;}
                 set { if (FuncBlock != null) FuncBlock.CustomName = value; }
+            }
+
+            // Should this be made static for later use?   >:-|
+            string ParseBlockTag(IMyTerminalBlock block) {
+                if (block is IMyLandingGear)
+                    return MagnetTag;
+                if (!(block is IMyMechanicalConnectionBlock))
+                    return string.Empty;
+                if (FootID == -1)
+                    return JointTag;
+                if (block.CustomName.Contains(ToeSignature))
+                    return GripTag;
+                if (block.CustomName.Contains(TurnSignature))
+                    return TurnTag;
+                return PlaneTag;
             }
 
             public bool IsAlive() {
@@ -33,8 +50,8 @@ namespace IngameScript
                 if (!base.Load(data)) return false;
 
                 try {
-                    FootIndex = int.Parse(data[(int)PARAM_custom.fIX]);
-                    TAG = ParseBlockTag(FuncBlock, FootIndex > -1);
+                    FootID = int.Parse(data[(int)SaveDataAttribute.FootID]);
+                    TAG = ParseBlockTag(FuncBlock);
                     return true;
                 }
                 catch { return false; }

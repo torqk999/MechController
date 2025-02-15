@@ -10,18 +10,13 @@ namespace IngameScript
     {
 
 
-        class JointSet : Group
+        class JointSet : FunctionalGroup
         {
-            //string _name;
-            //public override string Name {
-            //    get { return _name; }
-            //    set { _name = value; }
-            //}
 
             public IMyTerminalBlock Plane;
-            public List<Root> Feet = new List<Root>();
-            public List<Root> Joints = new List<Root>();
-            public List<Root> Sequences = new List<Root>();
+            public List<Foot> Feet = new List<Foot>();
+            public List<Joint> Joints = new List<Joint>();
+            public List<Sequence> Sequences = new List<Sequence>();
 
             public KeyFrame ZeroFrame = null;
 
@@ -33,14 +28,14 @@ namespace IngameScript
 
             //public bool Locked;
             public bool StepInterrupt;
-            //public int LockedIndex;
+            //public int LockedFootID;
+            public int LockedFootIndex;
             int ReleaseTimer = 0;
 
-            public JointSet(IMyTerminalBlock plane, IMyBlockGroup group, int[] intData) : base(group, intData)
+            public JointSet(IMyTerminalBlock plane, IMyBlockGroup group, int uniqueID) : base(group, uniqueID)
             {
                 TAG = JointSetTag;
                 Plane = plane;
-                //_name = stringData[(int)PARAM_string.Name];
                 GenerateZeroFrame();
             }
 
@@ -50,98 +45,42 @@ namespace IngameScript
                 Feet.AddRange(buffer);
             }
 
-            public void GenerateZeroFrame()
-            {
-                int[] intData = new int[Enum.GetNames(typeof(PARAM_int)).Length];
+            public void GenerateZeroFrame() { ZeroFrame = NewKeyFrame(this, "Zero Frame"); }
 
-                intData[(int)PARAM_int.uIX] = -1;
-                intData[(int)PARAM_int.pIX] = MyIndex;
+            public override void AddChild<T>(T child) {
+                if (child == null) return;
 
-                ZeroFrame = NewKeyFrame(intData, this, "Zero Frame");
+                if (typeof(T) == typeof(Joint))
+                    Joints.Add(child as Joint);
+                else if (typeof(T) == typeof(Foot))
+                    Feet.Add(child as Foot);
+                else if (typeof(T) == typeof(Sequence))
+                    Sequences.Add(child as Sequence);
+                else return;
+
+                child.Parent = this;
             }
 
-            public Foot GetFoot(int index)
-            {
-                if (index < 0 || index >= Feet.Count)
+            public override T GetChildByID<T>(int ID) {
+                if (typeof(T) == typeof(Joint))
+                    return Joints.Find(x => x.UniqueID == ID) as T;
+                if (typeof(T) == typeof(Foot))
+                    return Feet.Find(x => x.UniqueID == ID) as T;
+                if (typeof(T) == typeof(Sequence))
+                    return Sequences.Find(x => x.UniqueID == ID) as T;
+                return null;
+            }
+
+            public override T GetChildByIndex<T>(int index) {
+                if (index < 0)
                     return null;
-                return (Foot)Feet[index];
-            }
-            public Joint GetJoint(int index)
-            {
-                if (index < 0 || index >= Joints.Count)
-                    return null;
-                return (Joint)Joints[index];
-            }
-            public Sequence GetSequence(int index)
-            {
-                if (index < 0 || index >= Sequences.Count)
-                    return null;
-                return (Sequence)Sequences[index];
-            }
-
-            public override void Insert(Root root, int index = -1)
-            {
-                if (root is Joint)
-                    insert(Joints, root, index);
-
-                if (root is Sequence)
-                    insert(Sequences, root, index);
-            }
-
-            public override void Remove(int index, eRoot type)
-            {
-                switch(type)
-                {
-                    case eRoot.JOINT:
-                        remove(Joints, index);
-                        break;
-
-                    case eRoot.SEQUENCE:
-                        remove(Sequences, index);
-                        break;
-                }
-            }
-
-            public override void Swap(int target, int delta, eRoot type)
-            {
-                switch (type)
-                {
-                    case eRoot.JOINT:
-                        swap(Joints, target, target + delta);
-                        break;
-
-                    case eRoot.SEQUENCE:
-                        swap(Sequences, target, target + delta);
-                        break;
-                }
-            }
-
-            public override void ReIndex(eRoot type)
-            {
-                switch(type)
-                {
-                    case eRoot.JOINT:
-                        reIndex(Joints);
-                        break;
-
-                    case eRoot.SEQUENCE:
-                        reIndex(Sequences);
-                        break;
-                }
-
-            }
-            public override void Sort(eRoot type)
-            {
-                switch(type)
-                {
-                    case eRoot.JOINT:
-                        Joints.Sort(SORT);
-                        break;
-
-                    case eRoot.SEQUENCE:
-                        Sequences.Sort(SORT);
-                        break;
-                }
+                if (typeof(T) == typeof(Joint))
+                    return index >= Joints.Count ? null : Joints[index] as T;
+                if (typeof(T) == typeof(Foot))
+                    return index >= Feet.Count ? null : Feet[index] as T;
+                if (typeof(T) == typeof(Sequence))
+                    return index >= Sequences.Count ? null : Sequences[index] as T;
+                return null;
             }
 
             public bool UpdateJoints()
@@ -169,7 +108,7 @@ namespace IngameScript
                     return false;
 
                 bool oldState = Locked;
-                Foot locked = GetFoot(LockedIndex);
+                Foot locked = GetChildByIndex<Foot>(LockedFootIndex);
                 Locked = locked != null && locked.CheckLocked();
 
 
@@ -184,8 +123,8 @@ namespace IngameScript
             }
             public bool CheckStep(bool forward = true)
             {
-                Foot step = GetFoot(StepIndex(forward));
-                Foot release = GetFoot(LockedIndex);
+                Foot step = GetChildByIndex<Foot>(StepIndex(forward));
+                Foot release = GetChildByIndex<Foot>(LockedFootIndex);
 
                 bool touch = step != null && step.CheckTouching();
                 bool locked = step != null && step.CheckLocked();
@@ -213,7 +152,7 @@ namespace IngameScript
             public void UnlockAllFeet()
             {
                 ReleaseTimer = ReleaseCount;
-                LockedIndex = -1;
+                LockedFootIndex = -1;
                 UnlockOtherFeet();
             }
             public void IncrementStepping(ClockMode mode)
@@ -231,40 +170,40 @@ namespace IngameScript
 
             int StepIndex(bool forward)
             {
-                int stepIndex = LockedIndex + (forward ? 1 : -1);
+                int stepIndex = LockedFootIndex + (forward ? 1 : -1);
                 stepIndex = stepIndex < 0 ? Feet.Count - 1 : stepIndex >= Feet.Count ? 0 : stepIndex;
                 return stepIndex;
             }
             void UnlockOtherFeet()
             {
-                Foot expected = GetFoot(LockedIndex);
+                Foot expected = GetChildByIndex<Foot>(LockedFootIndex);
                 foreach (Foot foot in Feet)
                     if (foot != expected)
                         foot.ToggleLock(false);
             }
             void IncrementStepping(int incr)
             {
-                SetLockedIndex(LockedIndex + incr);
+                SetLockedIndex(LockedFootIndex + incr);
             }
             void SetLockedIndex(int step)
             {
-                LockedIndex = step;
-                LockedIndex = LockedIndex < 0 ? Feet.Count - 1 : LockedIndex >= Feet.Count ? 0 : LockedIndex;
+                LockedFootIndex = step;
+                LockedFootIndex = LockedFootIndex < 0 ? Feet.Count - 1 : LockedFootIndex >= Feet.Count ? 0 : LockedFootIndex;
             }
             void NewLockCandidate()
             {
                 for (int i = 0; i < Feet.Count; i++)
                 {
-                    Foot check = GetFoot(i);
+                    Foot check = GetChildByIndex<Foot>(i);
                     if (check.CheckLocked() || check.CheckTouching())
                     {
                         check.ToggleLock(true);
-                        LockedIndex = i;
+                        LockedFootIndex = i;
                         Locked = true;
 
                         if (CurrentWalk != null)
                         {
-                            CurrentWalk.LoadKeyFrames(true, check.LockedIndex);
+                            CurrentWalk.LoadKeyFrames(check.LockFrameID);
                             CurrentWalk.StepDelay = true;
                         }
 
@@ -274,7 +213,7 @@ namespace IngameScript
                 }
 
                 Locked = false;
-                LockedIndex = -1;
+                LockedFootIndex = -1;
             }
 
             public void SyncJoints()

@@ -7,28 +7,37 @@ namespace IngameScript
 {
     partial class Program
     {
-        class Foot : Group {
+        class Foot : FunctionalGroup {
 
             public List<Root> Toes = new List<Root>();
             public List<Root> Planars = new List<Root>();
             public List<Root> Magnets = new List<Root>();
 
+            public int LockFrameID;
+
             public bool Planeing;
             public Vector3 PlanarRatio;
 
             public override string Name {
-                get { return $"[FOOT:{MyIndex}]"; }
+                get { return $"[FOOT:{UniqueID}]"; }
             }
-
-            public Foot(IMyBlockGroup group, int[] intData) : base(group, intData)
+            /// <summary>
+            /// Create
+            /// </summary>
+            /// <param name="group"></param>
+            /// <param name="uniqueID"></param>
+            /// <param name="lockFrameID"></param>
+            public Foot(IMyBlockGroup group, int uniqueID, int lockFrameID = -1) : base(group, uniqueID)
             {
-                LockedIndex = intData[(int)PARAM_int.lIX];
+                LockFrameID = lockFrameID;
             }
-
+            /// <summary>
+            /// Load
+            /// </summary>
+            /// <param name="input"></param>
             public Foot(string input) : base(input)
             {
-                //StaticDlog("Foot Constructor:");
-                //BUILT = Load(input);
+
             }
 
             public Joint GetToe(int index)
@@ -132,21 +141,21 @@ namespace IngameScript
                     PlanarRatio.SetDim(i, 1 / PlanarRatio.GetDim(i));
             }
 
-            //protected override bool Load(string[] data)
-            //{
-            //    if (!base.Load(data))
-            //        return false;
-            //
-            //    try { LockIndex = int.Parse(data[(int)PARAM_custom.lIX]); }
-            //    catch { LockIndex = -1; }
-            //    return true;
-            //}
+            protected override bool Load(string[] data)
+            {
+                if (!base.Load(data))
+                    return false;
+            
+                try { LockFrameID = int.Parse(data[(int)SaveDataAttribute.SyncID]); }
+                catch { LockFrameID = -1; }
+                return true;
+            }
 
-            //protected override void saveData(string[] buffer)
-            //{
-            //    base.saveData(buffer);
-            //    buffer[(int)PARAM_custom.lIX] = LockIndex.ToString();
-            //}
+            protected override void saveData(string[] buffer)
+            {
+                base.saveData(buffer);
+                buffer[(int)SaveDataAttribute.SyncID] = LockFrameID.ToString();
+            }
         }
 
     }

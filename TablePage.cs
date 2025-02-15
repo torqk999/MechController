@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
+using System.Xml;
 using VRage;
 using VRage.Collections;
 using VRage.Game;
@@ -69,7 +70,7 @@ namespace IngameScript
                 RawBuffer.Clear();
 
                 RawBuffer.Add($"= {Name} =");
-                RawBuffer.Add($"[Selected JSET:{GetJointSet(SelectedIndexes[eRoot.JSET])?.Name()}][FootCount:{GetJointSet(SelectedIndexes[eRoot.JSET])?.Feet.Count}]=");
+                RawBuffer.Add($"[Selected JSET:{GetJointSet(SelectedIndexes[eRoot.JSET])?.Name}][FootCount:{GetJointSet(SelectedIndexes[eRoot.JSET])?.Feet.Count}]=");
 
                 if (AlternateMode)
                     MagnetPageBuilder();
@@ -81,8 +82,8 @@ namespace IngameScript
 
             void JointPageBuilder()
             {
-                for (int i = (int)PARAM_custom.TAG; i < JointParamCount; i++)
-                    DisplayManagerBuilder.Append($"[{(PARAM_custom)i}]");
+                for (int i = (int)SaveDataAttribute.TAG; i < JointParamCount; i++)
+                    DisplayManagerBuilder.Append($"[{(SaveDataAttribute)i}]");
 
                 DisplayManagerBuilder.Append("[Name]");
                 RawBuffer.Add(DisplayManagerBuilder.ToString());
@@ -93,8 +94,8 @@ namespace IngameScript
 
             void MagnetPageBuilder()
             {
-                for (int i = (int)PARAM_custom.TAG; i < MagnetParamCount; i++)
-                    DisplayManagerBuilder.Append($"[{(PARAM_custom)i}]");
+                for (int i = (int)SaveDataAttribute.TAG; i < MagnetParamCount; i++)
+                    DisplayManagerBuilder.Append($"[{(SaveDataAttribute)i}]");
 
                 DisplayManagerBuilder.Append("[Name]");
                 RawBuffer.Add(DisplayManagerBuilder.ToString());
@@ -128,7 +129,7 @@ namespace IngameScript
 
                 DisplayManagerBuilder.Append(BuildCursor(selected));
                 DisplayManagerBuilder.Append($"{Pad(index)}");
-                int[] intData = joint.IntParams();
+                //int[] intData = joint.IntParams();
                 int selectedParam = SelectedIndex(eRoot.PARAM);
                 int selectedElement = SelectedIndex(AlternateMode ? eRoot.MAGNET : eRoot.JOINT);
                 string leftSelect, rightSelect;
@@ -137,12 +138,12 @@ namespace IngameScript
                 rightSelect = selectedParam == 1 && selectedElement == index ? Cursor[3] : Cursor[0];
                 DisplayManagerBuilder.Append($"{leftSelect}[{joint.TAG}]{rightSelect}");
 
-                for (int i = 0; i < intData.Length; i++)
-                {
-                    leftSelect = selectedParam == (int)PARAM_int.uIX + i && selectedElement == index ? Cursor[2] : Cursor[0];
-                    rightSelect = selectedParam == (int)PARAM_int.uIX + i && selectedElement == index ? Cursor[3] : Cursor[0];
-                    DisplayManagerBuilder.Append($"{leftSelect}[{Pad(intData[i])}]{rightSelect}");
-                }
+                //for (int i = 0; i < intData.Length; i++)
+                //{
+                //    leftSelect = selectedParam == (int)PARAM_int.uIX + i && selectedElement == index ? Cursor[2] : Cursor[0];
+                //    rightSelect = selectedParam == (int)PARAM_int.uIX + i && selectedElement == index ? Cursor[3] : Cursor[0];
+                //    DisplayManagerBuilder.Append($"{leftSelect}[{Pad(intData[i])}]{rightSelect}");
+                //}
 
                 
                 DisplayManagerBuilder.Append($" == {joint.Name}");
@@ -160,7 +161,7 @@ namespace IngameScript
                     Joint freshJoint = LoadJoint(joint);
                     if (!freshJoint.BUILT) {
 
-                        freshJoint = NewJoint(joint);
+                        freshJoint = NewJoint(joint, UniqueID(JointBin));
                     }
 
                     int oldIndex = JointBin.FindIndex(x => ((Joint)x).Connection.EntityId == joint.EntityId);
@@ -178,12 +179,7 @@ namespace IngameScript
                     Magnet freshMagnet = LoadMagnet(gear);
 
                     if (!freshMagnet.BUILT) {
-                        int[] intData = new int[Enum.GetNames(typeof(PARAM_int)).Length];
-                        intData[(int)PARAM_int.pIX] = SelectedIndex(eRoot.JSET);
-                        intData[(int)PARAM_int.uIX] = -1; // ??????????????
-                        intData[(int)PARAM_int.fIX] = -1;
-
-                        freshMagnet = NewMagnet(gear, intData);
+                        freshMagnet = new Magnet(gear, UniqueID(MagnetBin));
                     }
 
                     int oldIndex = MagnetBin.FindIndex(x => ((Magnet)x).Gear.EntityId == gear.EntityId);
@@ -215,9 +211,9 @@ namespace IngameScript
             void TableValueAdjust(int deltaValue)
             {
                 if (AlternateMode)
-                    AdjustMagnetParam(MagnetBin[SelectedIndex(eRoot.MAGNET)] as Magnet, (PARAM_custom)SelectedIndex(eRoot.PARAM), deltaValue);
+                    AdjustMagnetParam(MagnetBin[SelectedIndex(eRoot.MAGNET)] as Magnet, (SaveDataAttribute)SelectedIndex(eRoot.PARAM), deltaValue);
                 else
-                    AdjustJointParam(JointBin[SelectedIndex(eRoot.JOINT)] as Joint, (PARAM_custom)SelectedIndex(eRoot.PARAM), deltaValue);
+                    AdjustJointParam(JointBin[SelectedIndex(eRoot.JOINT)] as Joint, (SaveDataAttribute)SelectedIndex(eRoot.PARAM), deltaValue);
             }
             public override void SetMode(GUIMode mode)
             {
@@ -240,32 +236,32 @@ namespace IngameScript
 
                 TableShift(0, 0);
             }
-            void AdjustJointParam(Joint joint, PARAM_custom targetParam, int deltaValue)
+            void AdjustJointParam(Joint joint, SaveDataAttribute targetParam, int deltaValue)
             {
                 switch (targetParam)
                 {
-                    case PARAM_custom.uIX:
-                        GetJointSet(SelectedIndex(eRoot.JSET))?.Swap(joint.MyIndex, joint.MyIndex += deltaValue, eRoot.JOINT);
+                    //case PARAM_custom.uIX:
+                    //    GetJointSet(SelectedIndex(eRoot.JSET))?.Swap(joint.UniqueID, joint.UniqueID += deltaValue, eRoot.JOINT);
+                    //    break;
+
+                    //case PARAM_custom.pIX:
+                    //    joint.ParentID += deltaValue;
+                    //    break;
+
+                    case SaveDataAttribute.FootID:
+                        joint.FootID += deltaValue;
                         break;
 
-                    case PARAM_custom.pIX:
-                        joint.ParentIndex += deltaValue;
-                        break;
-
-                    case PARAM_custom.fIX:
-                        joint.FootIndex += deltaValue;
-                        break;
-
-                    case PARAM_custom.GripDirection:
+                    case SaveDataAttribute.GripDirection:
                         joint.GripDirection += deltaValue;
                         joint.GripDirection = joint.GripDirection < -1 ? -1 : joint.GripDirection > 1 ? 1 : joint.GripDirection;
                         break;
 
-                    case PARAM_custom.sIX:
-                        joint.SyncIndex += deltaValue;
+                    case SaveDataAttribute.SyncID:
+                        joint.SyncID += deltaValue;
                         break;
 
-                    case PARAM_custom.TAG:
+                    case SaveDataAttribute.TAG:
                         int tagIndex = JointTags.FindIndex(x => x == joint.TAG);
                         if (tagIndex < 0)
                         {
@@ -283,23 +279,23 @@ namespace IngameScript
                 }
             }
 
-            void AdjustMagnetParam(Magnet magnet, PARAM_custom targetParam, int deltaValue)
+            void AdjustMagnetParam(Magnet magnet, SaveDataAttribute targetParam, int deltaValue)
             {
                 switch (targetParam)
                 {
-                    case PARAM_custom.uIX:
-                        magnet.MyIndex += deltaValue;
+                    //case PARAM_custom.uIX:
+                    //    magnet.UniqueID += deltaValue;
+                    //    break;
+
+                    //case PARAM_custom.pIX:
+                    //    magnet.ParentID += deltaValue;
+                    //    break;
+
+                    case SaveDataAttribute.FootID:
+                        magnet.FootID += deltaValue;
                         break;
 
-                    case PARAM_custom.pIX:
-                        magnet.ParentIndex += deltaValue;
-                        break;
-
-                    case PARAM_custom.fIX:
-                        magnet.FootIndex += deltaValue;
-                        break;
-
-                    case PARAM_custom.TAG:
+                    case SaveDataAttribute.TAG:
                         int tagIndex = MagnetTags.FindIndex(x => x == magnet.TAG);
                         if (tagIndex < 0)
                         {
@@ -317,17 +313,17 @@ namespace IngameScript
                 }
             }
 
-            void AdjustFunctionalParam(Functional functional, PARAM_custom targetParam, int deltaValue)
+            void AdjustFunctionalParam(Functional functional, SaveDataAttribute targetParam, int deltaValue)
             {
                 switch(targetParam)
                 {
-                    case PARAM_custom.uIX:
-                        functional.MyIndex += deltaValue;
+                    case SaveDataAttribute.UniqueID:
+                        functional.UniqueID += deltaValue;
                         break;
 
-                    case PARAM_custom.pIX:
-                        functional.ParentIndex += deltaValue;
-                        break;
+                    //case PARAM_custom.pIX:
+                    //    functional.ParentID += deltaValue;
+                    //    break;
 
 
                 }
